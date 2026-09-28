@@ -554,3 +554,58 @@ updateMaker();
 const adminImportBtn=$("#adminImportBtn"), adminImportFile=$("#adminImportFile");
 adminImportBtn?.addEventListener("click",()=>adminImportFile?.click());
 adminImportFile?.addEventListener("change",()=>{ const f=adminImportFile.files?.[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{ try{ const d=JSON.parse(r.result); const id=(d.name||"friend").toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+Date.now().toString(36); const card={id,nome:d.name||"AMIGO",titulo:d.title||"NOVO CARTÃO",icon:d.icon||"★",hint:"CARD FACTORY • IMPORTED",tipoDeAnimacao:d.animation||"glitter",mensagem:d.message||"",fotos:d.image?.dataUrl?[d.image.dataUrl]:[],musica:d.music?.type==="file"?"":d.music?.url||"",musicaNome:d.music?.type==="youtube"?"YouTube":d.music?.type==="spotify"?"Spotify":d.music?.file||"",cardConfig:d}; cards.push(card); localStorage.setItem("renatinho-imported-"+id,JSON.stringify(card)); renderCards(); renderPlaylist(); makerStatus && (makerStatus.textContent="★ IMPORTED INTO THIS BROWSER ★"); playTone("unlock"); }catch{alert("CARD.JSON inválido.");} }; r.readAsText(f); });
+
+/* ==========================================================
+   V4 POLISH — interface sound, visitor counter, hover tilt
+   ========================================================== */
+(function v4Polish(){
+  const counter = document.querySelector("#visitorCounter");
+  const counter2 = document.querySelector("#visitorNumber");
+  const key = "renatinho-visitor-count-v4";
+  let n = Number(localStorage.getItem(key) || "1337");
+  n += 1;
+  localStorage.setItem(key, String(n));
+  const txt = String(n).padStart(7,"0");
+  if(counter) counter.textContent = txt;
+  if(counter2) counter2.textContent = txt;
+
+  // Tiny UI sound without external assets.
+  let ac = null;
+  function beep(freq=520,duration=.045,type="square",gain=.025){
+    try{
+      ac ||= new (window.AudioContext||window.webkitAudioContext)();
+      const o=ac.createOscillator(), g=ac.createGain();
+      o.type=type; o.frequency.value=freq; g.gain.value=gain;
+      o.connect(g); g.connect(ac.destination);
+      const now=ac.currentTime;
+      g.gain.setValueAtTime(gain,now);
+      g.gain.exponentialRampToValueAtTime(.0001,now+duration);
+      o.start(now); o.stop(now+duration);
+    }catch(e){}
+  }
+  document.addEventListener("pointerdown",e=>{
+    const b=e.target.closest("button,a");
+    if(!b) return;
+    if(b.matches("#openMakerBtn,#exportMakerBtn,#randomMakerBtn")) {
+      beep(740,.055,"square",.035);
+      setTimeout(()=>beep(980,.045,"square",.025),45);
+    } else {
+      beep(410,.035,"square",.018);
+    }
+  },{passive:true});
+
+  // Gentle pseudo-3D tilt on desktop cards.
+  if(matchMedia("(pointer:fine)").matches){
+    document.querySelectorAll(".card,.final-card,.maker-card-inner").forEach(el=>{
+      el.addEventListener("pointermove",ev=>{
+        const r=el.getBoundingClientRect();
+        const x=(ev.clientX-r.left)/r.width-.5;
+        const y=(ev.clientY-r.top)/r.height-.5;
+        el.style.transform=`perspective(900px) rotateX(${(-y*3).toFixed(2)}deg) rotateY(${(x*4).toFixed(2)}deg) translateY(-3px)`;
+      });
+      el.addEventListener("pointerleave",()=>{
+        el.style.transform="";
+      });
+    });
+  }
+})();

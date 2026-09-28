@@ -1,0 +1,74 @@
+[
+  {
+    "id": "fluminense",
+    "nome": "AMIGO 1",
+    "titulo": "STADIUM MODE",
+    "icon": "⚽",
+    "hint": "MATCH START • TRICOLOR POWER",
+    "tipoDeAnimacao": "stadium",
+    "mensagem": "Aqui entra a mensagem real do amigo.",
+    "fotos": [],
+    "musica": "",
+    "musicaNome": ""
+  },
+  {
+    "id": "dino",
+    "nome": "AMIGO 2",
+    "titulo": "JURASSIC MODE",
+    "icon": "🦖",
+    "hint": "FOSSIL FOUND • LEVEL: CHILDHOOD",
+    "tipoDeAnimacao": "dino",
+    "mensagem": "Uma mensagem jurássica para o Renatinho.",
+    "fotos": [],
+    "musica": "",
+    "musicaNome": ""
+  },
+  {
+    "id": "onepiece",
+    "nome": "AMIGO 3",
+    "titulo": "PIRATE MODE",
+    "icon": "☠️",
+    "hint": "QUEST START • NEW ADVENTURE",
+    "tipoDeAnimacao": "pirate",
+    "mensagem": "Uma aventura começa!",
+    "fotos": [],
+    "musica": "",
+    "musicaNome": ""
+  },
+  {
+    "id": "music",
+    "nome": "AMIGO 4",
+    "titulo": "MUSIC MODE",
+    "icon": "♫",
+    "hint": "PRESS PLAY • TRACK FOUND",
+    "tipoDeAnimacao": "music",
+    "mensagem": "Dê o play.",
+    "fotos": [],
+    "musica": "",
+    "musicaNome": ""
+  },
+  {
+    "id": "books",
+    "nome": "AMIGO 5",
+    "titulo": "BOOK MODE",
+    "icon": "📖",
+    "hint": "CHAPTER FOUND • TURN PAGE",
+    "tipoDeAnimacao": "books",
+    "mensagem": "CAPÍTULO ESPECIAL.",
+    "fotos": [],
+    "musica": "",
+    "musicaNome": ""
+  },
+  {
+    "id": "secret",
+    "nome": "AMIGO 6",
+    "titulo": "SECRET MODE",
+    "icon": "★",
+    "hint": "ACCESSING SECRET FILE…",
+    "tipoDeAnimacao": "secret",
+    "mensagem": "PASSWORD ACCEPTED.",
+    "fotos": [],
+    "musica": "",
+    "musicaNome": ""
+  }
+]
