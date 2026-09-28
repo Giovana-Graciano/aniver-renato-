@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>★ RENATINHO ADMIN CONSOLE ★</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="access-page">
+<section class="access-shell">
+<div class="access-titlebar"><span>★ RENATINHO_ADMIN.EXE</span><span>● PRIVATE</span></div>
+<div id="adminGate" class="access-body">
+  <div class="access-hero"><div class="access-star">★</div><h1>ADMIN CONSOLE</h1><p>Área da organizadora. Aqui os cartões ficam em espera até você publicar.</p></div>
+  <form class="access-form" id="adminGateForm">
+    <label>ADMIN CODE<input id="adminCode" type="password" autocomplete="off" maxlength="40"></label>
+    <button type="submit">🔐 ACCESS ADMIN</button>
+    <div class="access-error" id="adminGateError"></div>
+  </form>
+</div>
+<div id="adminPanel" class="hidden-page">
+  <div class="access-body">
+    <div class="access-layout">
+      <section class="access-panel">
+        <h2>INBOX — FRIEND CARDS</h2>
+        <div class="drop-zone" id="dropZone">
+          <div>DROP `.JSON` FILES HERE<br><br>OU<br><br><input id="cardFiles" type="file" accept=".json,application/json" multiple></div>
+        </div>
+        <p class="admin-note">Importe os arquivos enviados pelos amigos. Eles entram como <b>pending</b> e não aparecem no site até você exportar uma nova versão de <code>cards.json</code>.</p>
+        <div class="access-actions">
+          <button id="loadCurrentBtn" type="button">↻ CARREGAR PUBLICADOS</button>
+          <button id="exportCardsBtn" type="button">★ PUBLICAR CARDS.JSON</button>
+        </div>
+        <div class="access-status" id="adminStatus">● WAITING FOR ADMIN ACTION</div>
+      </section>
+      <section class="access-panel">
+        <h2>QUEUE</h2>
+        <div class="pending-list" id="pendingList"></div>
+        <h3>Como publicar</h3>
+        <p class="admin-note">1. Importe os JSONs.<br>2. Remova os que não quiser publicar.<br>3. Clique em <b>PUBLICAR CARDS.JSON</b>.<br>4. Substitua <code>cards/cards.json</code> no GitHub pelo arquivo baixado.</p>
+      </section>
+    </div>
+  </div>
+</div>
+</section>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

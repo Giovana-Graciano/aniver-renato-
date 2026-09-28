@@ -1071,3 +1071,87 @@ button:active,.btn:active,.card-button:active,.unlock-button:active,.maker-launc
   .desktop-widgets{display:none}
   .y2k-utility-strip{font-size:6px}
 }
+
+/* ==========================================================
+   V5 — PRIVATE FRIEND AREA / ADMIN WORKFLOW
+   ========================================================== */
+.public-secret-notice{
+  margin:10px auto 0;
+  padding:7px 10px;
+  width:min(900px,94%);
+  border:4px ridge #fff;
+  background:linear-gradient(#2b332f,#090c0a 50%,#40101a);
+  color:#d7d7d7;
+  box-shadow:4px 4px #000,0 0 16px rgba(0,255,102,.14);
+  font:7px var(--pixel);
+  text-align:center;
+}
+.public-secret-notice span{color:#ff5a78;animation:badgeFlash 1.2s steps(2,end) infinite}
+
+.access-page{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(0,255,102,.15),transparent 25%),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px),
+    #030504;
+  color:#fff;
+}
+.access-shell{
+  width:min(1050px,96vw);
+  border:9px ridge #fff;
+  background:#bfc2bd;
+  color:#111;
+  box-shadow:14px 14px #000,0 0 55px rgba(0,255,102,.25);
+}
+.access-titlebar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 11px;
+  background:linear-gradient(#23a35b,#07331d);
+  color:#fff;border-bottom:5px ridge #fff;
+  font:9px var(--pixel);text-shadow:2px 2px #000;
+}
+.access-body{padding:18px;background:linear-gradient(135deg,#dfe1dd,#9da19d)}
+.access-hero{
+  padding:20px;text-align:center;
+  background:linear-gradient(135deg,#071f14,#5f0919);
+  color:#fff;border:6px ridge #fff;
+  box-shadow:7px 7px #000;
+}
+.access-hero .access-star{font-size:38px;filter:drop-shadow(4px 4px #000);animation:superSparkle .8s infinite alternate}
+.access-hero h1{font:clamp(15px,3vw,27px) var(--pixel);margin:10px 0;text-shadow:3px 3px #000}
+.access-hero p{font:12px "Courier New";line-height:1.5}
+.access-form{
+  width:min(480px,100%);margin:18px auto;padding:16px;
+  background:#d6d7d2;border:6px ridge #fff;box-shadow:6px 6px #000;
+}
+.access-form label{display:flex;flex-direction:column;gap:7px;font:8px var(--pixel);margin-bottom:10px}
+.access-form input,.access-form textarea,.access-form select{
+  border:4px inset #fff;background:#fff;color:#111;padding:9px;font:13px "Courier New";
+}
+.access-form button{
+  width:100%;padding:12px;margin-top:6px;
+}
+.access-error{min-height:18px;margin-top:10px;color:#a5001d;font:bold 11px "Courier New";text-align:center}
+.access-small{display:block;text-align:center;font:9px "Courier New";color:#444;margin-top:8px}
+.access-layout{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1fr);gap:16px}
+.access-panel{background:#dedfd9;border:6px ridge #fff;padding:13px;box-shadow:5px 5px #000}
+.access-panel h2{font:11px var(--pixel);margin:0 0 12px;color:#063b24}
+.access-panel h3{font:9px var(--pixel);color:#6b071c}
+.access-actions{display:flex;gap:8px;flex-wrap:wrap}.access-actions button{flex:1;min-width:160px}
+.drop-zone{
+  border:5px dashed #3b463f;background:#f5f5f0;padding:22px;text-align:center;
+  font:10px "Courier New";min-height:120px;display:grid;place-items:center;
+}
+.drop-zone.drag{background:#c8ffd8;box-shadow:inset 0 0 20px rgba(0,255,102,.3)}
+.pending-list{display:flex;flex-direction:column;gap:7px;max-height:390px;overflow:auto}
+.pending-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;background:#111;color:#fff;border:3px ridge #fff;font:9px "Courier New"}
+.pending-item b{color:var(--y2k-green)}.pending-item button{padding:5px;font:7px var(--pixel)}
+.access-status{padding:8px;background:#050805;color:var(--y2k-green);border:4px inset #aaa;font:8px var(--pixel);line-height:1.5}
+.access-status.warning{color:#ffe44c}.access-status.error{color:#ff6a86}
+.admin-note{font:10px "Courier New";line-height:1.5;background:#fff8b5;padding:9px;border:2px solid #222}
+.hidden-page{display:none!important}
+
+@media(max-width:800px){.access-layout{grid-template-columns:1fr}.access-shell{width:98vw}.access-body{padding:9px}}

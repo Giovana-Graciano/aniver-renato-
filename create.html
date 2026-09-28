@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#063b24">
+<title>★ SECRET FRIEND AREA — RENATINHO ★</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="access-page" id="createPage">
+  <section class="access-shell">
+    <div class="access-titlebar"><span>★ FRIEND_AREA.EXE</span><span>● CLASSIFIED</span></div>
+    <div id="gate">
+      <div class="access-body">
+        <div class="access-hero">
+          <div class="access-star">★</div>
+          <h1>SECRET FRIEND AREA</h1>
+          <p>Você foi recrutado para uma missão especial.<br><b>NÃO MOSTRE ESTA PÁGINA AO RENATINHO.</b></p>
+          <p>Digite o código que a Giovana te enviou.</p>
+        </div>
+        <form class="access-form" id="gateForm">
+          <label>ACCESS CODE
+            <input id="accessCode" autocomplete="off" spellcheck="false" maxlength="32" placeholder="••••••••">
+          </label>
+          <button type="submit">🔓 ENTER SECRET AREA</button>
+          <div class="access-error" id="gateError"></div>
+          <small class="access-small">★ NO SPOILERS • NO SHARING • HAVE FUN ★</small>
+        </form>
+      </div>
+    </div>
+
+    <div id="factory" class="hidden-page">
+      <div class="access-body">
+        <div class="access-hero">
+          <div class="access-star">✦</div>
+          <h1>RENATINHO CARD FACTORY</h1>
+          <p>Construa sua obra-prima dos anos 2000 e entregue para a administradora.</p>
+        </div>
+
+        <div class="maker-layout" style="margin-top:16px">
+          <form class="maker-panel" id="makerForm">
+            <label>SEU NOME<input id="mkName" maxlength="28" required placeholder="Ex.: João"></label>
+            <label>TÍTULO DO CARTÃO<input id="mkTitle" maxlength="42" placeholder="Ex.: MUSIC MODE"></label>
+            <label>SUA MENSAGEM<textarea id="mkMessage" rows="5" maxlength="900" placeholder="Escreva sua mensagem para o Renatinho..." required></textarea></label>
+
+            <div class="maker-row">
+              <label>FONTE / ESTILO
+                <select id="mkFont"><option value="pixel">PIXEL ARCADE</option><option value="typewriter">TYPEWRITER</option><option value="bubble">BUBBLE 2000</option><option value="hand">MS PAINT HAND</option></select>
+              </label>
+              <label>ALINHAMENTO
+                <select id="mkAlign"><option value="center">CENTRO</option><option value="left">ESQUERDA</option><option value="right">DIREITA</option></select>
+              </label>
+            </div>
+
+            <label>IMAGEM / GIF / FOTO
+              <input id="mkImage" type="file" accept="image/*">
+            </label>
+            <div class="image-style-picks">
+              <label><input type="radio" name="imgStyle" value="polaroid" checked> 📌 POLAROID</label>
+              <label><input type="radio" name="imgStyle" value="sticker"> 💥 STICKER</label>
+              <label><input type="radio" name="imgStyle" value="glow"> ✨ GLITTER FRAME</label>
+              <label><input type="radio" name="imgStyle" value="tilt"> 📐 TILT</label>
+            </div>
+
+            <div class="maker-row">
+              <label>TEMA
+                <select id="mkTheme">
+                  <option value="green">TRICOLOR / GREEN</option><option value="red">RED ALERT</option>
+                  <option value="gold">GOLD WEB</option><option value="purple">MSN PURPLE</option>
+                  <option value="blue">AIM BLUE</option><option value="pink">TUMBLR PINK</option>
+                </select>
+              </label>
+              <label>ANIMAÇÃO
+                <select id="mkAnim">
+                  <option value="powerpoint">POWERPOINT POP</option><option value="glitter">GLITTER BLAST</option>
+                  <option value="bounce">BOUNCE 2004</option><option value="terminal">HACKER.EXE</option>
+                  <option value="vinyl">CD / MUSIC</option><option value="dino">DINO ATTACK</option>
+                </select>
+              </label>
+            </div>
+
+            <label>EMOJIS / STICKERS <small class="maker-hint">Clique para adicionar/remover.</small></label>
+            <div class="emoji-picks" id="emojiPicks">
+              <button type="button" data-emoji="✨">✨</button><button type="button" data-emoji="⭐">⭐</button>
+              <button type="button" data-emoji="💚">💚</button><button type="button" data-emoji="❤️">❤️</button>
+              <button type="button" data-emoji="🦖">🦖</button><button type="button" data-emoji="⚽">⚽</button>
+              <button type="button" data-emoji="🎵">🎵</button><button type="button" data-emoji="💿">💿</button>
+              <button type="button" data-emoji="📖">📖</button><button type="button" data-emoji="🦋">🦋</button>
+              <button type="button" data-emoji="💥">💥</button><button type="button" data-emoji="☠️">☠️</button>
+            </div>
+
+            <label>EFEITOS</label>
+            <div class="effect-picks">
+              <label><input type="checkbox" id="fxGlitter" checked> ✦ GLITTER</label>
+              <label><input type="checkbox" id="fxSparkle" checked> ✨ SPARKLES</label>
+              <label><input type="checkbox" id="fxFloat" checked> 🪩 EMOJIS FLUTUANDO</label>
+              <label><input type="checkbox" id="fxScan" checked> 📺 SCANLINES</label>
+            </div>
+
+            <label>MÚSICA
+              <select id="mkMusicType">
+                <option value="none">SEM MÚSICA</option><option value="youtube">LINK DO YOUTUBE</option>
+                <option value="spotify">LINK DO SPOTIFY</option><option value="file">ARQUIVO DE ÁUDIO</option>
+              </select>
+            </label>
+            <input id="mkMusicUrl" placeholder="Cole o link do YouTube ou Spotify" class="maker-music-url hidden">
+            <label id="mkMusicFileLabel" class="maker-file-label hidden">ARQUIVO DE ÁUDIO
+              <input id="mkMusicFile" type="file" accept="audio/*">
+            </label>
+
+            <div class="maker-actions">
+              <button type="button" id="randomMakerBtn">🎲 SURPRESA!</button>
+              <button type="button" id="previewMakerBtn">▶ TESTAR</button>
+              <button type="button" id="exportMakerBtn">💾 ENVIAR CARTÃO</button>
+            </div>
+            <div class="access-status" id="makerStatus">● READY • YOUR MASTERPIECE IS WAITING</div>
+            <small class="maker-hint">Ao clicar em ENVIAR CARTÃO, será baixado um arquivo <b>.json</b>. Mande esse arquivo para a Giovana. Seu cartão só entra no site depois que ela publicar.</small>
+          </form>
+
+          <div class="maker-preview-wrap">
+            <div class="preview-label">LIVE PREVIEW • 800x600 INTERNET</div>
+            <div class="maker-preview" id="makerPreview">
+              <div class="maker-skyline"></div>
+              <div class="maker-sticker" id="previewEmojis">✨ 💚 ⭐</div>
+              <div class="maker-card-inner">
+                <div class="preview-badge">NEW!!!</div>
+                <div class="preview-icon" id="previewIcon">★</div>
+                <img id="previewImage" class="preview-image hidden" alt="">
+                <div class="preview-title" id="previewTitle">MEU CARTÃO</div>
+                <div class="preview-from" id="previewFrom">DE: AMIGO</div>
+                <div class="preview-message" id="previewMessage">Sua mensagem aparece aqui.</div>
+                <div class="preview-music" id="previewMusic">♫ NO MUSIC SELECTED</div>
+              </div>
+            </div>
+            <div class="maker-status" id="liveStatus">● LIVE • READY</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="create.js"></script>
+</body>
+</html>
