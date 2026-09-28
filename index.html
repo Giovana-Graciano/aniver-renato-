@@ -56,15 +56,20 @@
         <div class="visitor">YOU ARE VISITOR<br><b>#000013</b></div>
       </header>
 
-      <div class="world-map-label"><span>SELECT YOUR MEMORIES</span><b>WORLD MAP</b><span>USE ▲ ▼ / TAP TO ENTER</span></div>
+      <div class="world-map-label"><span>SELECT YOUR MEMORIES</span><b>★ WORLD MAP ★</b><span>▲ ▼ MOVE • A ENTER • B BACK</span></div>
+      <div class="pixel-ground" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
 
-      <div class="hud" aria-label="Status do jogo">
-        <span>PLAYER: <b>RENATINHO</b></span>
+      <div class="console-hud" aria-label="Status do jogo">
+        <div class="hud-main"><span>PLAYER: <b>RENATINHO</b></span>
         <span>LEVEL: <b>BIRTHDAY</b></span>
         <span>LIVES: <b>♥ ♥ ♥ ♥ ♥</b></span>
         <span>SCORE: <b id="score">000000</b></span>
-        <span>MEMORIES UNLOCKED: <b id="progress">0/6</b></span>
+        <span>MEMORIES: <b id="progress">0/6</b></span></div>
+        <div class="hud-items"><span>🪙 <b id="coins">00</b></span><span>★ <b id="starsCollected">00</b></span><span>FILE <b>01</b></span></div>
       </div>
+
+      <div class="retro-controls" aria-hidden="true"><span class="dpad">▲<i>◀</i><b>●</b><i>▶</i>▼</span><span class="control-help">A = ENTER &nbsp; B = BACK &nbsp; START = BEGIN</span><span class="ab">A<br><small>B</small></span></div>
+
 
       <div class="notice">
         <span class="new">NEW!!!</span>
@@ -94,6 +99,8 @@
       </footer>
     </section>
   </main>
+
+  <div class="world-start hidden" id="worldStart" aria-hidden="true"><div class="world-start-card"><small id="worldStartSmall">WORLD 01</small><strong id="worldStartTitle">READY?</strong><span>PRESS A</span></div></div>
 
   <div class="modal hidden" id="modal" aria-hidden="true">
     <div class="modal-backdrop"></div>

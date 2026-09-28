@@ -12,6 +12,11 @@ const progressEl = $("#progress");
 const scoreEl = $("#score");
 const allUnlocked = $("#allUnlocked");
 const finalCard = $("#finalCard");
+const worldStart = $("#worldStart");
+const worldStartSmall = $("#worldStartSmall");
+const worldStartTitle = $("#worldStartTitle");
+const coinsEl = $("#coins");
+const starsCollectedEl = $("#starsCollected");
 const worldProgressFill = $("#worldProgressFill");
 const levelClear = $("#levelClear");
 const sparkleLayer = $("#sparkleLayer");
@@ -118,6 +123,8 @@ function updateProgress(){
   const count = [...opened].filter(id => cards.some(c => c.id === id)).length;
   progressEl.textContent = `${count}/${TOTAL_CARDS}`;
   scoreEl.textContent = padScore(count);
+  if(coinsEl) coinsEl.textContent = String(count * 3).padStart(2,"0");
+  if(starsCollectedEl) starsCollectedEl.textContent = String(count).padStart(2,"0");
   if(worldProgressFill) worldProgressFill.style.width = `${(count / TOTAL_CARDS) * 100}%`;
   document.querySelectorAll(".card").forEach(btn=>{
     btn.classList.toggle("unlocked", opened.has(btn.dataset.card));
@@ -134,7 +141,7 @@ function renderCards(){
   const grid = $("#cardsGrid");
   grid.innerHTML = cards.map((c, i) => `
     <button class="card c${i+1}" data-card="${c.id}" type="button" aria-label="Abrir ${c.titulo}">
-      <span class="world-number">WORLD ${String(i+1).padStart(2,"0")}</span>
+      <span class="world-number">WORLD ${String(i+1).padStart(2,"0")} • AREA ${String(i+1).padStart(2,"0")}</span>
       <span class="card-icon" aria-hidden="true">${c.icon}</span>
       <strong>${c.titulo}</strong>
       <small>${c.nome} • ${c.hint}</small>
@@ -208,11 +215,14 @@ function openCard(id){
   if(!c) return;
   initAudio();
   playTone(c.tipoDeAnimacao==="stadium"?"stadium":c.tipoDeAnimacao==="dino"?"dino":c.tipoDeAnimacao==="pirate"?"pirate":c.tipoDeAnimacao==="music"?"music":c.tipoDeAnimacao==="books"?"books":"secret");
+  const world = String(cards.findIndex(x=>x.id===id)+1).padStart(2,"0");
+  showWorldStart(world, c.titulo);
   if(!opened.has(id)){
     opened.add(id);
     saveOpened();
     updateProgress();
   }
+  setTimeout(()=>{
   animation.className=`anim-wrap anim-${c.tipoDeAnimacao}`;
   $("#modalFile").textContent=`${id.toUpperCase()}.EXE`;
   animation.innerHTML=`<div class="fake-photo" aria-hidden="true">${c.icon}</div>`;
@@ -222,6 +232,18 @@ function openCard(id){
   document.body.style.overflow="hidden";
   spawnSparkles(c.tipoDeAnimacao==="secret"?24:12);
   setTimeout(()=>$(".back-btn")?.focus(),80);
+  }, 760);
+}
+
+function showWorldStart(world,title){
+  if(!worldStart) return;
+  worldStartSmall.textContent=`WORLD ${world}`;
+  worldStartTitle.textContent=title;
+  worldStart.classList.remove("hidden");
+  worldStart.setAttribute("aria-hidden","false");
+  worldStart.style.animation="none";
+  void worldStart.offsetWidth;
+  worldStart.style.animation="worldFade .95s ease forwards";
 }
 
 function buildMessage(c){
