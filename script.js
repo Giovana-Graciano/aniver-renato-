@@ -287,6 +287,7 @@ function revealCard(id){
   const c=cards.find(x=>x.id===id);
   if(!c) return;
   initAudio();
+  startCardOpeningMusic(c);
   playTone(c.tipoDeAnimacao==="stadium"?"stadium":c.tipoDeAnimacao==="dino"?"dino":c.tipoDeAnimacao==="pirate"?"pirate":c.tipoDeAnimacao==="music"?"music":c.tipoDeAnimacao==="books"?"books":"secret");
   const world = String(cards.findIndex(x=>x.id===id)+1).padStart(2,"0");
   showWorldStart(world, c.titulo);
@@ -327,7 +328,7 @@ function buildMessage(c){
     : c.tipoDeAnimacao==="pirate"
     ? `<div class="progress-line">🧭 QUEST START • TREASURE MAP LOADED</div>`
     : c.tipoDeAnimacao==="music"
-    ? `<div class="progress-line">♫ TRACK FOUND • PRESS PLAY (MÚSICA REAL ENTRA DEPOIS)</div>`
+    ? `<div class="progress-line">♫ TRACK FOUND • MUSIC STARTS WHEN YOU OPEN</div>`
     : c.tipoDeAnimacao==="books"
     ? `<div class="progress-line">CHAPTER 01 → CHAPTER 02 → SPECIAL ENDING</div>`
     : `<div class="progress-line">FOSSIL / MEMORY / DISCOVERY FOUND ✓</div>`;
@@ -355,6 +356,7 @@ function openFinal(){
 }
 
 function closeCard(){
+  stopCardOpeningMusic();
   modal.classList.add("hidden");
   modal.setAttribute("aria-hidden","true");
   document.body.style.overflow="";
@@ -467,108 +469,100 @@ audioPlayer?.addEventListener("ended",()=>{ document.querySelectorAll(".playlist
 })();
 
 
+
 /* ==========================================================
    V6 — MUSIC STARTS WHEN THE CARD OPENS
-   The first user click that opens a card is the gesture that
-   authorizes audio playback. External URLs are handled with
-   a lightweight player link; local audio is played directly.
+   The friend-card button click is the user gesture. Local audio
+   starts immediately; YouTube/Spotify are embedded in-page.
    ========================================================== */
-(function cardOpeningMusic(){
-  let currentAudio=null;
-  let currentCard=null;
-  const audioBar=document.querySelector("#cardOpenAudio");
-  const label=document.querySelector("#cardMusicLabel");
-  const toggle=document.querySelector("#cardMusicToggle");
+let cardOpeningAudio = null;
 
-  function stop(){
-    if(currentAudio){ currentAudio.pause(); currentAudio.currentTime=0; currentAudio=null; }
-    if(audioBar) audioBar.classList.remove("show");
-  }
-
-  function youtubeEmbed(url){
-    try{
-      const u=new URL(url);
-      let id="";
-      if(u.hostname.includes("youtu.be")) id=u.pathname.slice(1);
-      if(u.hostname.includes("youtube.com")) id=u.searchParams.get("v") || u.pathname.split("/").pop();
-      return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : "";
-    }catch(e){return ""}
-  }
-
-  function spotifyEmbed(url){
-    try{
-      const u=new URL(url);
-      const m=u.pathname.match(/\/(track|album|playlist|episode|show)\/([^/?]+)/);
-      return m ? `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&autoplay=1` : "";
-    }catch(e){return ""}
-  }
-
-  async function play(card){
-    stop(); currentCard=card;
-    const m=card?.cardConfig?.musica || {};
-    const type=m.type || (card?.musicaNome==="YouTube"?"youtube":card?.musicaNome==="Spotify"?"spotify":"none");
-    const src=card?.musica || m.url || "";
-    if(!src || type==="none") return;
-
-    // Direct audio files are the most reliable autoplay-after-click path.
-    if(type==="file" && src.startsWith("data:audio/")){
-      currentAudio=new Audio(src);
-      currentAudio.loop=true;
-      try{
-        await currentAudio.play();
-        if(audioBar){label.textContent=`♫ ${card.musicaNome||"NOW PLAYING"}`;audioBar.classList.add("show");}
-      }catch(e){}
-      return;
-    }
-
-    // For YouTube/Spotify, open an in-page mini player after the click.
-    // This avoids silently navigating away from the birthday site.
-    const embed=type==="youtube"?youtubeEmbed(src):type==="spotify"?spotifyEmbed(src):"";
-    if(embed){
-      let frame=document.querySelector("#cardMusicEmbed");
-      if(!frame){
-        frame=document.createElement("iframe");
-        frame.id="cardMusicEmbed";
-        frame.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
-        frame.style.cssText="position:fixed;left:50%;bottom:72px;transform:translateX(-50%);width:min(420px,88vw);height:84px;z-index:10000;border:5px ridge #fff;box-shadow:7px 7px #000;background:#000;";
-        document.body.appendChild(frame);
-      }
-      frame.src=embed;
-      if(audioBar){label.textContent=`♫ ${card.musicaNome||"NOW PLAYING"}`;audioBar.classList.add("show");}
-    }
-  }
-
-  if(toggle){
-    toggle.addEventListener("click",e=>{
+function getMusicType(c){
+  const cfg=c?.cardConfig?.musica || {};
+  if(cfg.type) return cfg.type;
+  if(c?.musicaNome==="YouTube") return "youtube";
+  if(c?.musicaNome==="Spotify") return "spotify";
+  if(typeof c?.musica==="string" && c.musica.startsWith("data:audio/")) return "file";
+  return c?.musica ? "url" : "none";
+}
+function musicUrl(c){
+  return c?.cardConfig?.musica?.url || c?.musica || "";
+}
+function youtubeEmbedUrl(url){
+  try{
+    const u=new URL(url);
+    let id="";
+    if(u.hostname.includes("youtu.be")) id=u.pathname.slice(1).split("/")[0];
+    else if(u.hostname.includes("youtube.com")) id=u.searchParams.get("v") || u.pathname.split("/").filter(Boolean).pop();
+    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1` : "";
+  }catch(e){ return ""; }
+}
+function spotifyEmbedUrl(url){
+  try{
+    const u=new URL(url);
+    const m=u.pathname.match(/\/(track|album|playlist|episode|show)\/([^/?]+)/);
+    return m ? `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&autoplay=1` : "";
+  }catch(e){ return ""; }
+}
+function ensureCardMusicUI(labelText){
+  let bar=document.querySelector("#cardOpenAudio");
+  if(!bar){
+    bar=document.createElement("div");
+    bar.id="cardOpenAudio";
+    bar.className="card-open-audio";
+    bar.innerHTML='<span class="music-dot"></span><span id="cardMusicLabel"></span><button type="button" id="cardMusicToggle">❚❚</button>';
+    document.body.appendChild(bar);
+    bar.querySelector("#cardMusicToggle").addEventListener("click",e=>{
       e.stopPropagation();
-      if(currentAudio){
-        if(currentAudio.paused){currentAudio.play();toggle.textContent="❚❚"}
-        else {currentAudio.pause();toggle.textContent="▶"}
+      if(cardOpeningAudio){
+        if(cardOpeningAudio.paused){ cardOpeningAudio.play().catch(()=>{}); e.currentTarget.textContent="❚❚"; }
+        else { cardOpeningAudio.pause(); e.currentTarget.textContent="▶"; }
       }else{
         const frame=document.querySelector("#cardMusicEmbed");
         if(frame) frame.style.display=frame.style.display==="none"?"block":"none";
       }
     });
   }
+  bar.querySelector("#cardMusicLabel").textContent=labelText;
+  bar.classList.add("show");
+  return bar;
+}
+function stopCardOpeningMusic(){
+  if(cardOpeningAudio){ cardOpeningAudio.pause(); cardOpeningAudio.src=""; cardOpeningAudio=null; }
+  document.querySelector("#cardMusicEmbed")?.remove();
+  document.querySelector("#cardOpenAudio")?.classList.remove("show");
+}
+function startCardOpeningMusic(c){
+  stopCardOpeningMusic();
+  const type=getMusicType(c), src=musicUrl(c);
+  if(!src || type==="none") return;
 
-  // Expose for the card-opening code. We hook the common click paths
-  // without requiring changes to the card data format.
-  window.__renatinhoPlayCardMusic=play;
-  window.__renatinhoStopCardMusic=stop;
+  // Direct audio file: most reliable "click -> play" behavior.
+  if(type==="file" || src.startsWith("data:audio/")){
+    cardOpeningAudio=new Audio(src);
+    cardOpeningAudio.loop=true;
+    cardOpeningAudio.preload="auto";
+    cardOpeningAudio.play().then(()=>{
+      const bar=ensureCardMusicUI(`♫ ${c.musicaNome || c.titulo}`);
+      bar.querySelector("#cardMusicToggle").textContent="❚❚";
+    }).catch(()=>{
+      const bar=ensureCardMusicUI(`♫ ${c.musicaNome || c.titulo}`);
+      bar.querySelector("#cardMusicToggle").textContent="▶";
+    });
+    return;
+  }
 
-  // Observe newly-created/opened card modals and look for a card object
-  // attached by the existing V3/V4 code.
-  const observer=new MutationObserver(()=>{
-    const openCard=document.querySelector(".card-modal:not(.hidden) .card,[data-open-card].is-open,.card-modal.open .card");
-    if(!openCard) return;
-    const id=openCard.dataset?.cardId || openCard.closest("[data-card-id]")?.dataset?.cardId;
-    if(id && window.cards){
-      const c=window.cards.find(x=>x.id===id);
-      if(c) play(c);
-    }
-  });
-  observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class","data-card-id"]});
-})();
-
-/* V6 bridge: if your card-opening handler has the card object available,
-   call window.__renatinhoPlayCardMusic(card) after the opening animation starts. */
+  // YouTube / Spotify: create the player synchronously from the click handler.
+  const embed=type==="youtube" ? youtubeEmbedUrl(src) : type==="spotify" ? spotifyEmbedUrl(src) : "";
+  if(embed){
+    const frame=document.createElement("iframe");
+    frame.id="cardMusicEmbed";
+    frame.title="Música do cartão";
+    frame.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+    frame.setAttribute("allowfullscreen","");
+    frame.style.cssText="position:fixed;left:50%;bottom:72px;transform:translateX(-50%);width:min(420px,88vw);height:84px;z-index:10000;border:5px ridge #fff;box-shadow:7px 7px #000;background:#000;";
+    frame.src=embed;
+    document.body.appendChild(frame);
+    ensureCardMusicUI(`♫ ${c.musicaNome || c.titulo}`);
+  }
+}
