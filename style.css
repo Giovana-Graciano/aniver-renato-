@@ -723,3 +723,60 @@ body:before{opacity:.16!important}
 .friend-music{margin:14px auto;padding:10px;background:#eef7ea;border:3px double #b9d0b8;max-width:650px;text-align:center}.friend-music-label{font:7px var(--pixel);color:var(--clean-red);margin-bottom:7px}.music-inline{font:8px var(--pixel);padding:9px 12px;border:3px outset #fff;background:#fff;color:var(--clean-green);box-shadow:3px 3px 0 var(--clean-shadow);cursor:pointer}.music-inline:active{border-style:inset;transform:translate(2px,2px)}
 @media(max-width:760px){.birthday-badge b{font-size:14px}.age-mini{font-size:6px}.playlist-body{grid-template-columns:1fr}.playlist-head{align-items:flex-start}.playlist-head>div{flex-wrap:wrap}.playlist-date{display:none}}
 @media(max-width:520px){.playlist-head b{font-size:7px}.playlist-head small{font-size:6px}.playlist-body{padding:7px}.playlist-screen{min-height:58px}.playlist-controls button{width:27px;height:25px}.age-mini{font-size:5px}}
+
+
+/* ==========================================================
+   V3 — Y2K / FLASH / TUMBLR / CARD FACTORY
+   ========================================================== */
+.emoji-sky{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+.sky-emoji{position:absolute;left:var(--x);top:var(--y);font-size:var(--size);filter:drop-shadow(3px 4px 0 #000) drop-shadow(0 0 7px rgba(255,255,255,.7));animation:skyFloat var(--dur) ease-in-out var(--delay) infinite alternate}
+@keyframes skyFloat{from{transform:translate3d(0,0,0) rotate(-8deg)}to{transform:translate3d(var(--mx),var(--my),0) rotate(12deg) scale(1.13)}}
+
+.intro-inner,.site-header,.card,.final-card,.playlist-box,.maker-window{overflow:hidden}
+.intro-inner:after,.site-header:after,.card:after,.final-card:after,.playlist-box:after,.maker-window:after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+  background:linear-gradient(115deg,transparent 0 38%,rgba(255,255,255,.22) 47%,transparent 56% 100%);
+  transform:translateX(-120%);animation:shineSweep 7s ease-in-out infinite
+}
+@keyframes shineSweep{0%,65%{transform:translateX(-120%)}82%,100%{transform:translateX(120%)}}
+
+.maker-launcher{margin:18px auto 12px;width:min(860px,100%);display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 15px;border:6px ridge #fff;background:linear-gradient(180deg,#2e3933,#151b18 48%,#4b0e19);box-shadow:8px 8px #000,0 0 25px rgba(115,255,139,.2);font-family:var(--pixel);position:relative;z-index:5}
+.maker-copy{display:flex;flex-direction:column;gap:5px}.maker-copy b{color:var(--gold);text-shadow:2px 2px #000;font-size:11px}.maker-copy small{font:8px "Courier New";color:#fff}.maker-star{color:var(--lime);font-size:20px}
+.maker-launcher button{border:5px outset #fff;background:linear-gradient(#fff,#b8b8b8 48%,#777);color:#111;padding:10px 12px;cursor:pointer;font:9px var(--pixel);box-shadow:4px 4px #000;white-space:nowrap}
+.maker-launcher button:hover{filter:brightness(1.2);transform:translateY(-2px)}.maker-launcher button:active{border-style:inset;transform:translate(3px,3px);box-shadow:1px 1px #000}
+
+.maker-modal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:10px}
+.maker-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.9)}
+.maker-window{width:min(1180px,97vw);max-height:95vh;overflow:auto;background:#c9c9c4;color:#111;border:8px ridge #fff;box-shadow:18px 18px #000,0 0 40px rgba(115,255,139,.3);z-index:2}
+.maker-titlebar{position:sticky;top:0;z-index:10;height:38px;padding:7px 9px;background:linear-gradient(#176b3d,#052514);color:#fff;border-bottom:4px ridge #fff;font:10px var(--pixel);display:flex;align-items:center;justify-content:space-between}
+.maker-titlebar button{width:27px;height:27px;border:3px outset #fff;background:#ddd;color:#000;font-weight:bold;cursor:pointer}
+.maker-intro{padding:13px 17px;background:linear-gradient(90deg,#0c3d27,#691323);color:#fff;border-bottom:5px ridge #fff;text-align:center}
+.maker-intro span{display:block;font:8px var(--pixel);color:var(--lime);margin-bottom:7px}.maker-intro b{display:block;font:clamp(11px,2vw,17px) var(--pixel);text-shadow:3px 3px #000}.maker-intro small{display:block;margin-top:7px;font:11px "Courier New"}
+.maker-layout{display:grid;grid-template-columns:minmax(330px,1fr) minmax(360px,1fr);gap:15px;padding:15px;background:#8f8f89}
+.maker-panel{background:#deded8;border:5px inset #fff;padding:12px;display:flex;flex-direction:column;gap:9px}
+.maker-panel>label,.maker-row label{font:8px var(--pixel);color:#202820;display:flex;flex-direction:column;gap:5px}
+.maker-panel input,.maker-panel textarea,.maker-panel select{width:100%;border:4px inset #fff;background:#fff;color:#111;padding:8px;font:12px "Courier New";outline:none}
+.maker-panel textarea{resize:vertical;min-height:100px}.maker-panel input:focus,.maker-panel textarea:focus{box-shadow:0 0 0 3px var(--lime)}
+.maker-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.maker-hint{font:9px "Courier New";color:#555;line-height:1.4}
+.emoji-picks{display:flex;flex-wrap:wrap;gap:5px;background:#202620;border:4px inset #aaa;padding:7px}.emoji-picks button{border:3px outset #fff;background:#d7d7d2;padding:6px;font-size:21px;cursor:pointer;line-height:1}.emoji-picks button.selected{border-style:inset;background:var(--gold);transform:translate(2px,2px);box-shadow:inset 0 0 0 2px #000}
+.effect-picks{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;background:#263029;border:3px ridge #fff;color:#fff}.effect-picks label{font:9px "Courier New";padding:5px}.effect-picks input{accent-color:#159653}
+.maker-music-url.hidden,.maker-file-label.hidden{display:none!important}
+.maker-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}.maker-actions button{flex:1;border:4px outset #fff;background:linear-gradient(#fff,#bbb);color:#111;padding:9px 7px;font:8px var(--pixel);cursor:pointer;box-shadow:3px 3px #000}.maker-actions button:last-child{background:linear-gradient(#ffe65c,#a67d00)}.maker-actions button:active{border-style:inset;transform:translate(2px,2px);box-shadow:1px 1px #000}
+.maker-preview-wrap{display:flex;flex-direction:column;gap:7px;min-width:0}.preview-label,.maker-status{background:#111;color:var(--lime);border:3px ridge #fff;padding:7px;text-align:center;font:8px var(--pixel)}
+.maker-preview{min-height:570px;position:relative;overflow:hidden;display:grid;place-items:center;padding:25px;border:8px ridge #fff;background:radial-gradient(circle at 50% 15%,#42ce78,#0b5734 55%,#30050e);box-shadow:inset 0 0 0 3px #000,8px 8px #000}
+.maker-preview:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px,transparent 1px 4px);pointer-events:none}
+.maker-skyline{position:absolute;inset:auto 0 0;height:30%;background:linear-gradient(135deg,transparent 0 10%,rgba(0,0,0,.35) 10% 13%,transparent 13% 20%,rgba(0,0,0,.3) 20% 24%,transparent 24% 34%,rgba(0,0,0,.35) 34% 39%,transparent 39%);opacity:.7}
+.maker-sticker{position:absolute;inset:20px;display:flex;flex-wrap:wrap;justify-content:space-around;align-content:space-between;font-size:31px;filter:drop-shadow(3px 4px #000);animation:stickerWiggle 2.2s ease-in-out infinite alternate;pointer-events:none}
+@keyframes stickerWiggle{to{transform:rotate(2deg) scale(1.03)}}
+.maker-card-inner{position:relative;z-index:2;width:min(390px,100%);min-height:390px;padding:42px 22px 22px;text-align:center;border:9px ridge #fff;background:linear-gradient(150deg,rgba(255,255,255,.97),rgba(242,242,232,.96) 48%,rgba(180,255,205,.96));color:#063b24;box-shadow:12px 12px #000,0 0 25px rgba(255,255,255,.55);transform:perspective(800px) rotateY(-4deg) rotateX(2deg)}
+.preview-badge{position:absolute;right:9px;top:9px;padding:5px;background:var(--gold);color:#000;font:7px var(--pixel);transform:rotate(4deg);box-shadow:3px 3px #000}
+.preview-icon{font-size:65px;filter:drop-shadow(5px 6px #000);animation:twinkle 1s infinite alternate}.preview-title{font:14px var(--pixel);line-height:1.6;margin:13px 0;text-shadow:2px 2px #fff}.preview-from{font:bold 10px "Courier New";color:#7b0014}.preview-message{margin:15px auto;max-width:320px;font:13px "Courier New";line-height:1.55;min-height:95px}.preview-music{border:4px inset #fff;background:#1c231f;color:var(--lime);padding:9px;font:8px var(--pixel);margin-top:15px}
+.maker-status{color:var(--gold)}
+@media(max-width:850px){.maker-layout{grid-template-columns:1fr}.maker-preview{min-height:460px}.maker-card-inner{min-height:330px}}
+@media(max-width:600px){.maker-launcher{flex-direction:column;text-align:center}.maker-row{grid-template-columns:1fr}.maker-window{border-width:5px}.maker-layout{padding:7px}.maker-preview{min-height:400px;padding:15px}.maker-card-inner{min-height:300px;padding:35px 14px 14px}.maker-titlebar{font-size:7px}.maker-intro small{font-size:9px}}
+
+/* V3.5 — full Tumblr/2000s maker controls */
+.maker-style-row{margin-top:2px}.image-style-picks{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#262c28;border:3px ridge #fff;padding:6px;color:#fff;font:8px "Courier New"}.image-style-picks label{padding:5px;border:1px solid #68736b;cursor:pointer}.image-style-picks input{accent-color:#ffe45c}.maker-photo{max-width:150px;max-height:125px;object-fit:cover;margin:12px auto 0;border:7px ridge #fff;box-shadow:6px 7px #000;display:none}.maker-photo.show{display:block}.maker-photo.sticker{border:0;box-shadow:0 0 12px #fff;transform:rotate(-4deg)}.maker-photo.tilt{transform:rotate(5deg)}.maker-photo.glow{box-shadow:0 0 20px #fff,0 0 40px #ffe45c;border-color:#ffe45c}.maker-preview.font-typewriter .preview-message,.maker-preview.font-typewriter .preview-from{font-family:"Courier New",monospace}.maker-preview.font-bubble .preview-title,.maker-preview.font-bubble .preview-message{font-family:Arial,sans-serif;font-weight:900}.maker-preview.font-hand .preview-message{font-family:cursive}.maker-preview.align-left .maker-card-inner{text-align:left}.maker-preview.align-right .maker-card-inner{text-align:right}.maker-preview.fx-rainbow{animation:rainbowHue 3s linear infinite}.maker-preview.fx-matrix:after{content:"010101010011010110010101011001";position:absolute;inset:0;color:#55ff77;opacity:.13;font:15px monospace;line-height:1.4;word-break:break-all;z-index:1;pointer-events:none}.maker-preview.fx-bubbles:after{content:"○  ○   ○     ○   ○   ○     ○";position:absolute;inset:0;color:#fff;opacity:.2;font-size:45px;line-height:1.8;animation:bubbleDrift 6s linear infinite;pointer-events:none}.maker-preview.motion-spin .maker-sticker{animation:stickerSpin 5s linear infinite}.maker-preview.motion-fall .maker-sticker{animation:stickerFall 3s ease-in-out infinite alternate}.maker-preview.motion-pulse .maker-sticker{animation:stickerPulse 1s ease-in-out infinite alternate}.maker-preview.motion-mouse .maker-sticker{transition:transform .12s linear}.maker-preview.fx-confetti .maker-sticker{filter:drop-shadow(3px 4px #000) saturate(1.3)}
+@keyframes rainbowHue{to{filter:hue-rotate(360deg)}}@keyframes stickerSpin{to{transform:rotate(360deg)}}@keyframes stickerFall{from{transform:translateY(-18px)}to{transform:translateY(25px)}}@keyframes stickerPulse{to{transform:scale(1.16)}}@keyframes bubbleDrift{from{transform:translateY(25%)}to{transform:translateY(-30%)}}
+.maker-embed-preview{width:100%;height:90px;border:4px inset #fff;background:#111;margin-top:10px;display:none}.maker-embed-preview.show{display:block}.maker-embed-preview iframe{width:100%;height:100%;border:0}.copy-ok{color:#00ff6a!important}
+\n.admin-mini{margin:5px auto 0;display:block;background:#111;color:#55ff77;border:2px ridge #fff;padding:4px 7px;font:7px "Courier New";cursor:pointer}.admin-mini:hover{color:#ffe45c}\n

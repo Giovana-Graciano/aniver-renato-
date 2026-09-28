@@ -14,6 +14,7 @@
   <div class="crt" aria-hidden="true"></div>
   <div class="stars" aria-hidden="true"></div>
   <div class="sparkle-layer" id="sparkleLayer" aria-hidden="true"></div>
+  <div class="emoji-sky" id="emojiSky" aria-hidden="true"></div>
 
   <main class="page">
     <section class="intro" id="intro" aria-labelledby="introTitle">
@@ -81,7 +82,17 @@
         <span class="blink">PRESS ENTER</span>
       </div>
 
-      <section class="playlist-box" aria-label="Playlist de aniversário">
+      
+      <div class="maker-launcher">
+        <div class="maker-copy">
+          <span class="maker-star">✦</span>
+          <b>RENATINHO CARD FACTORY</b>
+          <small>CREATE YOUR OWN 2000s VIRTUAL CARD • NO PROGRAMMING!!!</small>
+        </div>
+        <button id="openMakerBtn" type="button">🛠 CARD MAKER</button>
+      </div>
+
+<section class="playlist-box" aria-label="Playlist de aniversário">
         <div class="playlist-head">
           <div><span class="playlist-icon">♫</span><b>RENATINHO'S BIRTHDAY PLAYLIST</b><small>★ MÚSICAS DOS AMIGOS ★</small></div>
           <span class="playlist-date">30/10/2026</span>
@@ -114,12 +125,146 @@
 
       <footer class="site-footer">
         <div>BEST VIEWED AT 800x600 • MADE WITH ✦ GLITTER ✦ MS PAINT ✦ HTML</div>
-        <div>CLICK EVERYTHING. THIS IS THE INTERNET. &lt;&lt; <span class="blink">ONLINE!!!</span></div>
+        <div>CLICK EVERYTHING. THIS IS THE INTERNET. &lt;&lt; <span class="blink">ONLINE!!!</span></div><button class="admin-mini" id="adminImportBtn" type="button">[ ADMIN: IMPORT CARD.JSON ]</button><input id="adminImportFile" type="file" accept="application/json" hidden>
       </footer>
     </section>
   </main>
 
-  <div class="world-start hidden" id="worldStart" aria-hidden="true"><div class="world-start-card"><small id="worldStartSmall">WORLD 01</small><strong id="worldStartTitle">READY?</strong><span>PRESS A</span></div></div>
+  
+  <div class="maker-modal hidden" id="makerModal" aria-hidden="true">
+    <div class="maker-backdrop"></div>
+    <div class="maker-window" role="dialog" aria-modal="true" aria-labelledby="makerTitle">
+      <div class="maker-titlebar">
+        <span>★ RENATINHO_CARD_FACTORY.EXE</span>
+        <button id="closeMakerBtn" type="button">X</button>
+      </div>
+      <div class="maker-intro">
+        <span>WELCOME, INTERNET USER!!!</span>
+        <b id="makerTitle">★ CREATE YOUR OWN 2000s VIRTUAL CARD ★</b>
+        <small>Monte o cartão e veja o resultado em tempo real.</small>
+      </div>
+
+      <div class="maker-layout">
+        <form class="maker-panel" id="makerForm">
+          <label>SEU NOME
+            <input id="mkName" maxlength="28" placeholder="Ex.: João">
+          </label>
+          <label>TÍTULO DO CARTÃO
+            <input id="mkTitle" maxlength="42" placeholder="Ex.: MUSIC MODE">
+          </label>
+          <label>SUA MENSAGEM
+            <textarea id="mkMessage" rows="5" maxlength="650" placeholder="Escreva sua mensagem para o Renatinho..."></textarea>
+          </label>
+          <div class="maker-row maker-style-row">
+            <label>FONTE / ESTILO
+              <select id="mkFont"><option value="pixel">PIXEL ARCADE</option><option value="typewriter">TYPEWRITER</option><option value="bubble">BUBBLE 2000</option><option value="hand">MS PAINT HAND</option></select>
+            </label>
+            <label>ALINHAMENTO
+              <select id="mkAlign"><option value="center">CENTRO</option><option value="left">ESQUERDA</option><option value="right">DIREITA</option></select>
+            </label>
+          </div>
+          <label>IMAGEM / GIF / FOTO
+            <input id="mkImage" type="file" accept="image/*">
+          </label>
+          <div class="image-style-picks">
+            <label><input type="radio" name="imgStyle" value="polaroid" checked> 📌 POLAROID</label>
+            <label><input type="radio" name="imgStyle" value="sticker"> 💥 STICKER</label>
+            <label><input type="radio" name="imgStyle" value="glow"> ✨ GLITTER FRAME</label>
+            <label><input type="radio" name="imgStyle" value="tilt"> 📐 TILT</label>
+          </div>
+
+          <div class="maker-row">
+            <label>TEMA
+              <select id="mkTheme">
+                <option value="green">TRICOLOR / GREEN</option>
+                <option value="red">RED ALERT</option>
+                <option value="gold">GOLD WEB</option>
+                <option value="purple">MSN PURPLE</option>
+                <option value="blue">AIM BLUE</option>
+                <option value="pink">TUMBLR PINK</option>
+              </select>
+            </label>
+            <label>ANIMAÇÃO
+              <select id="mkAnim">
+                <option value="powerpoint">POWERPOINT POP</option>
+                <option value="glitter">GLITTER BLAST</option>
+                <option value="bounce">BOUNCE 2004</option>
+                <option value="terminal">HACKER.EXE</option>
+                <option value="vinyl">CD / MUSIC</option>
+                <option value="dino">DINO ATTACK</option>
+              </select>
+            </label>
+          </div>
+
+          <label>EMOJIS / STICKERS
+            <small class="maker-hint">Clique para adicionar/remover.</small>
+          </label>
+          <div class="emoji-picks" id="emojiPicks">
+            <button type="button" data-emoji="✨">✨</button><button type="button" data-emoji="⭐">⭐</button>
+            <button type="button" data-emoji="💚">💚</button><button type="button" data-emoji="❤️">❤️</button>
+            <button type="button" data-emoji="🦖">🦖</button><button type="button" data-emoji="⚽">⚽</button>
+            <button type="button" data-emoji="🎵">🎵</button><button type="button" data-emoji="💿">💿</button>
+            <button type="button" data-emoji="📖">📖</button><button type="button" data-emoji="🦋">🦋</button>
+            <button type="button" data-emoji="💥">💥</button><button type="button" data-emoji="☠️">☠️</button>
+          </div>
+
+          <label>EFEITOS</label>
+          <div class="effect-picks">
+            <label><input type="checkbox" id="fxGlitter" checked> ✦ GLITTER</label>
+            <label><input type="checkbox" id="fxSparkle" checked> ✨ SPARKLES</label>
+            <label><input type="checkbox" id="fxFloat" checked> 🪩 EMOJIS FLUTUANDO</label>
+            <label><input type="checkbox" id="fxScan" checked> 📺 SCANLINES</label>
+            <label><input type="checkbox" id="fxConfetti"> 🎉 CONFETE</label>
+            <label><input type="checkbox" id="fxBubbles"> 🫧 BOLHAS</label>
+            <label><input type="checkbox" id="fxRainbow"> 🌈 ARCO-ÍRIS</label>
+            <label><input type="checkbox" id="fxMatrix"> 🟩 MATRIX</label>
+          </div>
+          <label>COMO OS EMOJIS SE MOVEM
+            <select id="mkEmojiMotion"><option value="float">☁️ FLUTUANDO</option><option value="spin">🌀 GIRANDO</option><option value="fall">⬇️ CAINDO</option><option value="pulse">💓 PULSANDO</option><option value="mouse">🖱️ SEGUINDO O MOUSE</option></select>
+          </label>
+
+          <label>MÚSICA
+            <select id="mkMusicType">
+              <option value="none">SEM MÚSICA</option>
+              <option value="file">ARQUIVO DE ÁUDIO</option>
+              <option value="youtube">LINK DO YOUTUBE</option>
+              <option value="spotify">LINK DO SPOTIFY</option>
+            </select>
+          </label>
+          <input id="mkMusicUrl" placeholder="Cole o link aqui" class="maker-music-url hidden">
+          <label id="mkMusicFileLabel" class="maker-file-label">
+            OU ESCOLHA UM ÁUDIO
+            <input id="mkMusicFile" type="file" accept="audio/*">
+          </label>
+          <small class="maker-hint">O cartão exportado leva a configuração da música. Arquivos locais precisam acompanhar o projeto se forem hospedados.</small>
+
+          <div class="maker-actions">
+            <button type="button" id="randomMakerBtn">🎲 SURPRESA!</button>
+            <button type="button" id="copyMakerBtn">📋 COPIAR JSON</button><button type="button" id="exportMakerBtn">💾 EXPORTAR CARTÃO</button>
+          </div>
+        </form>
+
+        <div class="maker-preview-wrap">
+          <div class="preview-label">LIVE PREVIEW • 800x600 INTERNET</div>
+          <div class="maker-preview" id="makerPreview">
+            <div class="maker-skyline"></div>
+            <div class="maker-sticker" id="previewEmojis">✨ 💚 ⭐</div>
+            <div class="maker-card-inner">
+              <div class="preview-badge">NEW!!!</div>
+              <div class="preview-icon" id="previewIcon">★</div>
+              <div class="preview-title" id="previewTitle">MEU CARTÃO</div>
+              <div class="preview-from" id="previewFrom">DE: AMIGO</div>
+              <div class="preview-message" id="previewMessage">Sua mensagem aparece aqui.</div><img class="maker-photo" id="makerPhoto" alt="Imagem do cartão">
+              <div class="preview-music" id="previewMusic">♫ NO MUSIC SELECTED</div><div class="maker-embed-preview" id="makerEmbedPreview"></div>
+            </div>
+          </div>
+          <div class="maker-status" id="makerStatus">● READY • CHOOSE YOUR WEAPONS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="world-start hidden" id="worldStart" aria-hidden="true"><div class="world-start-card"><small id="worldStartSmall">WORLD 01</small><strong id="worldStartTitle">READY?</strong><span>PRESS A</span></div></div>
 
   <div class="modal hidden" id="modal" aria-hidden="true">
     <div class="modal-backdrop"></div>

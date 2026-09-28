@@ -41,7 +41,7 @@ let opened = new Set(loadOpened());
  *
  * fotos e musica ficam como campos preparados para uso futuro.
  */
-const cards = [
+let cards = [
   {
     id:"fluminense",
     nome:"AMIGO 1",
@@ -389,8 +389,14 @@ document.addEventListener("keydown",e=>{
   if(e.key==="Escape" && !modal.classList.contains("hidden")) closeCard();
 });
 
-renderCards();
-renderPlaylist();
+async function loadSavedCards(){
+  try{
+    const res=await fetch('./cards/cards.json',{cache:'no-store'});
+    if(res.ok){ const external=await res.json(); if(Array.isArray(external) && external.length) cards=external; }
+  }catch(e){}
+  renderCards(); renderPlaylist();
+}
+loadSavedCards();
 
 playlistList?.addEventListener("click", (e)=>{
   const track=e.target.closest(".playlist-track");
@@ -402,3 +408,149 @@ $("#playlistPause")?.addEventListener("click",()=>{ audioPlayer?.pause(); playTo
 $("#playlistStop")?.addEventListener("click",()=>{ if(audioPlayer){ audioPlayer.pause(); audioPlayer.currentTime=0; } playTone("click"); });
 audioPlayer?.addEventListener("timeupdate",()=>{ if(audioPlayer.duration && playlistProgress) playlistProgress.style.width=`${(audioPlayer.currentTime/audioPlayer.duration)*100}%`; });
 audioPlayer?.addEventListener("ended",()=>{ document.querySelectorAll(".playlist-track").forEach(btn=>btn.classList.remove("playing")); if(playlistProgress) playlistProgress.style.width="0%"; });
+
+
+/* ==========================================================
+   V3 — RENATINHO CARD FACTORY
+   ========================================================== */
+const makerModal = $("#makerModal");
+const openMakerBtn = $("#openMakerBtn");
+const closeMakerBtn = $("#closeMakerBtn");
+const mkName = $("#mkName"), mkTitle = $("#mkTitle"), mkMessage = $("#mkMessage");
+const mkTheme = $("#mkTheme"), mkAnim = $("#mkAnim"), mkMusicType = $("#mkMusicType");
+const mkMusicUrl = $("#mkMusicUrl"), mkMusicFile = $("#mkMusicFile"), mkMusicFileLabel = $("#mkMusicFileLabel");
+const previewTitle = $("#previewTitle"), previewFrom = $("#previewFrom"), previewMessage = $("#previewMessage");
+const previewMusic = $("#previewMusic"), previewEmojis = $("#previewEmojis"), makerPreview = $("#makerPreview"), makerStatus = $("#makerStatus");
+const emojiPicks = $("#emojiPicks");
+const mkFont = $("#mkFont"), mkAlign = $("#mkAlign"), mkImage = $("#mkImage"), mkEmojiMotion = $("#mkEmojiMotion");
+const makerPhoto = $("#makerPhoto");
+let makerEmojis = ["✨","💚","⭐"];
+let makerImageData = "";
+
+
+const themeMap = {
+  green:["#42ce78","#0b5734","#30050e"], red:["#ff5165","#8e0d1e","#160006"],
+  gold:["#ffe27a","#9b6c10","#251600"], purple:["#b56dff","#54227e","#13051e"],
+  blue:["#64c8ff","#13588a","#031322"], pink:["#ff86c8","#9a2269","#260317"]
+};
+
+function makerVal(el){ return (el?.value || "").trim(); }
+
+function updateMaker(){
+  if(!makerModal) return;
+  const name = makerVal(mkName) || "AMIGO";
+  const title = makerVal(mkTitle) || "MEU CARTÃO";
+  const msg = makerVal(mkMessage) || "Sua mensagem aparece aqui.";
+  previewTitle.textContent = title; previewFrom.textContent = `DE: ${name}`; previewMessage.textContent = msg;
+  previewEmojis.textContent = makerEmojis.join("  ");
+  makerPreview.classList.remove("font-pixel","font-typewriter","font-bubble","font-hand","align-left","align-right","fx-rainbow","fx-matrix","fx-bubbles","fx-confetti","motion-spin","motion-fall","motion-pulse","motion-mouse");
+  makerPreview.classList.add(`font-${mkFont?.value||"pixel"}`);
+  if(mkAlign?.value!=="center") makerPreview.classList.add(`align-${mkAlign.value}`);
+  if($("#fxRainbow")?.checked) makerPreview.classList.add("fx-rainbow");
+  if($("#fxMatrix")?.checked) makerPreview.classList.add("fx-matrix");
+  if($("#fxBubbles")?.checked) makerPreview.classList.add("fx-bubbles");
+  if($("#fxConfetti")?.checked) makerPreview.classList.add("fx-confetti");
+  if(mkEmojiMotion?.value && mkEmojiMotion.value!=="float") makerPreview.classList.add(`motion-${mkEmojiMotion.value}`);
+  if(makerPhoto){ makerPhoto.classList.toggle("show",!!makerImageData); if(makerImageData) makerPhoto.src=makerImageData; const st=document.querySelector('input[name="imgStyle"]:checked')?.value||"polaroid"; makerPhoto.className=`maker-photo show ${st}`; }
+
+  const t = themeMap[mkTheme.value] || themeMap.green;
+  makerPreview.style.background = `radial-gradient(circle at 50% 15%,${t[0]},${t[1]} 55%,${t[2]})`;
+  const icons = {powerpoint:"★",glitter:"✨",bounce:"💥",terminal:"⌨️",vinyl:"💿",dino:"🦖"};
+  $("#previewIcon").textContent = icons[mkAnim.value] || "★";
+  const mt = mkMusicType.value;
+  previewMusic.textContent = mt==="none" ? "♫ NO MUSIC SELECTED" :
+    mt==="file" ? `♫ LOCAL AUDIO: ${mkMusicFile.files?.[0]?.name || "ESCOLHA UM ARQUIVO"}` :
+    mt==="youtube" ? "▶ YOUTUBE PLAYER READY" : "♫ SPOTIFY PLAYER READY";
+  const embed=$("#makerEmbedPreview");
+  if(embed){ embed.innerHTML=""; embed.classList.remove("show"); const u=makerVal(mkMusicUrl);
+    if(mt==="youtube" && u){ const m=u.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/); if(m){ embed.innerHTML=`<iframe src="https://www.youtube.com/embed/${m[1]}?rel=0" title="YouTube preview" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`; embed.classList.add("show"); }}
+    if(mt==="spotify" && u){ const m=u.match(/open\.spotify\.com\/(?:intl-[^/]+\/)?([^?]+)/); if(m){ embed.innerHTML=`<iframe src="https://open.spotify.com/embed/${m[1]}" title="Spotify preview" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`; embed.classList.add("show"); }}
+  }
+  mkMusicUrl.classList.toggle("hidden", !(mt==="youtube" || mt==="spotify"));
+  mkMusicFileLabel.classList.toggle("hidden", mt!=="file");
+  makerStatus.textContent = `● LIVE • ${name.toUpperCase()} • ${title.toUpperCase()}`;
+}
+
+[mkName,mkTitle,mkMessage,mkTheme,mkAnim,mkMusicType,mkMusicUrl,mkMusicFile,mkFont,mkAlign,mkEmojiMotion].forEach(el=>el?.addEventListener("input",updateMaker));
+[mkTheme,mkAnim,mkMusicType,mkFont,mkAlign,mkEmojiMotion].forEach(el=>el?.addEventListener("change",updateMaker));
+document.querySelectorAll('.effect-picks input,.image-style-picks input').forEach(el=>el.addEventListener('change',updateMaker));
+mkImage?.addEventListener('change',()=>{ const f=mkImage.files?.[0]; if(!f){makerImageData="";updateMaker();return;} const r=new FileReader(); r.onload=()=>{makerImageData=String(r.result||"");updateMaker()}; r.readAsDataURL(f); });
+
+emojiPicks?.querySelectorAll("button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const e=btn.dataset.emoji;
+    if(makerEmojis.includes(e)){ makerEmojis=makerEmojis.filter(x=>x!==e); btn.classList.remove("selected"); }
+    else { makerEmojis.push(e); btn.classList.add("selected"); }
+    updateMaker(); if(typeof playTone==="function") playTone("click");
+  });
+});
+emojiPicks?.querySelectorAll("button").forEach(btn=>{ if(makerEmojis.includes(btn.dataset.emoji)) btn.classList.add("selected"); });
+
+function openMaker(){
+  if(typeof initAudio==="function") initAudio();
+  if(typeof playTone==="function") playTone("click");
+  makerModal.classList.remove("hidden"); makerModal.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden"; updateMaker();
+}
+function closeMaker(){
+  makerModal.classList.add("hidden"); makerModal.setAttribute("aria-hidden","true"); document.body.style.overflow="";
+}
+openMakerBtn?.addEventListener("click",openMaker); closeMakerBtn?.addEventListener("click",closeMaker);
+document.querySelector(".maker-backdrop")?.addEventListener("click",closeMaker);
+
+function makerRandom(){
+  const names=["AMIGO","MIGUXO","THE LEGEND","COMPANHEIRO","BFF","PLAYER 02"];
+  const titles=["★ BEST MEMORIES ★","A MESSAGE FOR RENATINHO","LEVEL UP!","PRESS PLAY!","SECRET INTERNET FILE","BIRTHDAY 2000"];
+  const msgs=[
+    "Renatinho, que seu novo nível venha cheio de histórias absurdas, músicas boas e momentos que merecem virar memória.",
+    "Feliz aniversário! Obrigado por todas as risadas, conversas e aventuras. Que essa fase seja inesquecível.",
+    "Arquivo recuperado com sucesso: uma amizade incrível. Parabéns, Renatinho! Que nunca faltem motivos para comemorar."
+  ];
+  mkName.value=names[Math.floor(Math.random()*names.length)];
+  mkTitle.value=titles[Math.floor(Math.random()*titles.length)];
+  mkMessage.value=msgs[Math.floor(Math.random()*msgs.length)];
+  mkTheme.value=Object.keys(themeMap)[Math.floor(Math.random()*6)];
+  mkAnim.value=["powerpoint","glitter","bounce","terminal","vinyl","dino"][Math.floor(Math.random()*6)];
+  makerEmojis=["✨","⭐","💚","❤️","🦖","⚽","🎵","💿","📖","🦋","💥","☠️"].sort(()=>Math.random()-.5).slice(0,3);
+  emojiPicks?.querySelectorAll("button").forEach(b=>b.classList.toggle("selected",makerEmojis.includes(b.dataset.emoji)));
+  updateMaker(); if(typeof playTone==="function") playTone("unlock");
+}
+$("#randomMakerBtn")?.addEventListener("click",makerRandom);
+
+function getMakerData(){
+  return {version:"renatinho-card-v3.5",name:makerVal(mkName)||"AMIGO",title:makerVal(mkTitle)||"MEU CARTÃO",message:makerVal(mkMessage)||"",theme:mkTheme.value,animation:mkAnim.value,icon:({powerpoint:"★",glitter:"✨",bounce:"💥",terminal:"⌨️",vinyl:"💿",dino:"🦖"}[mkAnim.value]||"★"),emojis:makerEmojis,style:{font:mkFont?.value||"pixel",align:mkAlign?.value||"center",imageStyle:document.querySelector('input[name="imgStyle"]:checked')?.value||"polaroid"},image:{dataUrl:makerImageData||"",file:mkImage?.files?.[0]?.name||""},effects:{glitter:$("#fxGlitter")?.checked,sparkle:$("#fxSparkle")?.checked,floatingEmojis:$("#fxFloat")?.checked,scanlines:$("#fxScan")?.checked,confetti:$("#fxConfetti")?.checked,bubbles:$("#fxBubbles")?.checked,rainbow:$("#fxRainbow")?.checked,matrix:$("#fxMatrix")?.checked,emojiMotion:mkEmojiMotion?.value||"float"},music:{type:mkMusicType.value,url:makerVal(mkMusicUrl),file:mkMusicFile.files?.[0]?.name||""},exportedAt:new Date().toISOString()};
+}
+async function copyMaker(){ const data=getMakerData(); try{await navigator.clipboard.writeText(JSON.stringify(data,null,2));makerStatus.textContent="★ JSON COPIED! SEND IT TO THE SITE ADMIN ★";makerStatus.classList.add("copy-ok");playTone("unlock");}catch{makerStatus.textContent="COPY BLOCKED — USE EXPORT CARD";} }
+$("#copyMakerBtn")?.addEventListener("click",copyMaker);
+
+function exportMaker(){
+  const data=getMakerData();
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download=`cartao-${(data.name||"amigo").toLowerCase().replace(/[^a-z0-9áéíóúãõç_-]+/gi,"-")}.json`; a.click();
+  URL.revokeObjectURL(a.href); makerStatus.textContent="★ CARD EXPORTED! MANDE O .JSON ★";
+  playTone("unlock"); if(typeof spawnSparkles==="function") spawnSparkles(22);
+}
+$("#exportMakerBtn")?.addEventListener("click",exportMaker);
+
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && makerModal && !makerModal.classList.contains("hidden")) closeMaker(); });
+
+(function createSkyEmojis(){
+  const sky=$("#emojiSky"); if(!sky) return;
+  const pool=["✨","⭐","💚","❤️","💿","🦖","⚽","🎵","📖","🦋","💥"];
+  for(let i=0;i<18;i++){
+    const s=document.createElement("span"); s.className="sky-emoji"; s.textContent=pool[i%pool.length];
+    s.style.setProperty("--x",`${3+Math.random()*94}%`); s.style.setProperty("--y",`${5+Math.random()*88}%`);
+    s.style.setProperty("--size",`${12+Math.random()*24}px`); s.style.setProperty("--dur",`${3+Math.random()*5}s`);
+    s.style.setProperty("--delay",`${-Math.random()*5}s`); s.style.setProperty("--mx",`${(Math.random()-.5)*45}px`);
+    s.style.setProperty("--my",`${(Math.random()-.5)*35}px`); sky.appendChild(s);
+  }
+})();
+
+updateMaker();
+
+
+/* ADMIN: import a friend's exported JSON into the current browser for review */
+const adminImportBtn=$("#adminImportBtn"), adminImportFile=$("#adminImportFile");
+adminImportBtn?.addEventListener("click",()=>adminImportFile?.click());
+adminImportFile?.addEventListener("change",()=>{ const f=adminImportFile.files?.[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{ try{ const d=JSON.parse(r.result); const id=(d.name||"friend").toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+Date.now().toString(36); const card={id,nome:d.name||"AMIGO",titulo:d.title||"NOVO CARTÃO",icon:d.icon||"★",hint:"CARD FACTORY • IMPORTED",tipoDeAnimacao:d.animation||"glitter",mensagem:d.message||"",fotos:d.image?.dataUrl?[d.image.dataUrl]:[],musica:d.music?.type==="file"?"":d.music?.url||"",musicaNome:d.music?.type==="youtube"?"YouTube":d.music?.type==="spotify"?"Spotify":d.music?.file||"",cardConfig:d}; cards.push(card); localStorage.setItem("renatinho-imported-"+id,JSON.stringify(card)); renderCards(); renderPlaylist(); makerStatus && (makerStatus.textContent="★ IMPORTED INTO THIS BROWSER ★"); playTone("unlock"); }catch{alert("CARD.JSON inválido.");} }; r.readAsText(f); });
