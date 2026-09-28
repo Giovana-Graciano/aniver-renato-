@@ -32,7 +32,7 @@ button{font:inherit}
   box-shadow:12px 12px 0 #000,0 0 35px rgba(115,255,139,.18);position:relative
 }
 .window-tag{position:absolute;left:0;right:0;top:0;background:#111;color:#fff;padding:7px 10px;text-align:left;font-size:11px;border-bottom:3px solid var(--green2)}
-.window-tag span{float:right;color:var(--lime)}
+.window-tag > span:first-child{float:left}.window-tag > span:last-child{float:right;color:var(--lime)}
 .sparkle{font-size:clamp(22px,5vw,48px);color:var(--gold);text-shadow:0 0 8px #fff;animation:twinkle 1s infinite alternate}
 .tiny{font-family:var(--pixel);font-size:10px;letter-spacing:1px}
 .intro h1{margin:16px 0 13px;font-family:var(--pixel),monospace;font-size:clamp(25px,6vw,62px);line-height:1.45;text-shadow:5px 5px 0 #000,0 0 12px var(--red2)}
@@ -174,3 +174,43 @@ button{font:inherit}
   *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}
   .crt{display:none}.intro-marquee span{animation:none}
 }
+
+/* ==========================================================
+   BIRTHDAY CONSOLE MODE — camada de videogame retrô
+   Mantém a estética anos 2000 e adiciona sensação de menu
+   de console/seleção de fases.
+   ========================================================== */
+.game-chrome{display:flex;justify-content:space-between;align-items:center;margin:-1px auto 18px;width:min(760px,100%);padding:7px 12px;border:3px solid #000;background:linear-gradient(#f6f6f0,#9d9d98);color:#111;font:8px var(--pixel);box-shadow:4px 4px 0 #000;letter-spacing:.5px}
+.game-chrome b{color:#6b0010;text-shadow:1px 1px #fff}
+.save-slot{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:16px auto 2px;max-width:650px;font:9px var(--pixel);color:#fff;background:#080808;border:4px inset #aaa;padding:8px;box-shadow:0 0 0 2px #000}
+.save-slot span{padding:5px 8px;border-right:2px solid #555}.save-slot span:last-child{border:0;color:var(--gold)}
+.game-banner{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 9px;padding:8px 10px;background:#050505;border:4px ridge #fff;color:var(--lime);font:8px var(--pixel);box-shadow:5px 5px #000;text-shadow:2px 2px #000}
+.game-banner b{color:#fff;font-size:11px}.game-banner span:last-child{color:var(--gold);animation:blinkGlow .9s steps(2,end) infinite}
+.world-map-label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 0 7px;padding:10px 12px;border:4px ridge #fff;background:linear-gradient(90deg,#0a3d26,#050505,#7d0011);font:8px var(--pixel);text-shadow:2px 2px #000}
+.world-map-label b{font-size:13px;color:var(--gold)}
+.world-progress{height:12px;border:3px inset #fff;background:#050505;margin:0 0 14px;box-shadow:3px 3px #000;overflow:hidden}.world-progress span{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--lime) 0 9px,#0a7a42 9px 12px);box-shadow:0 0 12px var(--lime);transition:width .45s steps(6,end)}
+.card{isolation:isolate;overflow:hidden}
+.card:before{z-index:0}.card>*{position:relative;z-index:1}
+.card:after{z-index:2}
+.card:focus-visible{outline:4px solid var(--gold);outline-offset:4px}
+.card.c1{background:linear-gradient(160deg,#0d703d,#032313 55%,#9b0018)}
+.card.c2{background:linear-gradient(145deg,#b09555,#514126 60%,#0c3a25)}
+.card.c3{background:linear-gradient(145deg,#173f62,#b18a3e 58%,#39160c)}
+.card.c4{background:linear-gradient(145deg,#4b155e,#090909 55%,#b30020)}
+.card.c5{background:linear-gradient(145deg,#773c18,#1d0c05 55%,#0b4429)}
+.card.c6{background:radial-gradient(circle at 50% 40%,#164f35,#030403 58%,#000)}
+.card.c1:hover{transform:translate(-5px,-9px) rotate(-1deg);box-shadow:15px 17px 0 #000,0 0 20px #20ff76}
+.card.c2:hover{transform:translate(3px,-8px) rotate(1.5deg);box-shadow:15px 17px 0 #000,0 0 20px #d5ae5a}
+.card.c3:hover{transform:translateY(-9px) rotate(-2deg);box-shadow:15px 17px 0 #000,0 0 20px #4cb6ff}
+.card.c4:hover{transform:scale(1.045) rotate(1deg);box-shadow:15px 17px 0 #000,0 0 24px #ff3b67}
+.card.c5:hover{transform:translateY(-8px) rotate(.5deg);box-shadow:15px 17px 0 #000,0 0 20px #ffc65a}
+.card.c6:hover{transform:translate(-2px,-8px) scale(1.02);box-shadow:15px 17px 0 #000,0 0 25px #73ff8b}
+.card .card-icon{transition:transform .25s steps(3,end),filter .25s}.card:hover .card-icon{transform:translateY(-7px) scale(1.08);filter:drop-shadow(5px 6px 0 #000) drop-shadow(0 0 8px var(--gold))}
+.enter-label{display:inline-block;margin-top:auto;font:9px var(--pixel);background:#050505;border:4px outset #eee;padding:8px 11px;color:#fff;box-shadow:4px 4px #000;transition:transform .12s}.card:hover .enter-label{transform:translate(2px,2px)}
+.level-clear{margin:22px auto 5px;width:min(650px,100%);text-align:center;border:7px ridge #fff;background:linear-gradient(#176b3d,#05170e);padding:18px;font:clamp(12px,2vw,18px) var(--pixel);color:var(--gold);text-shadow:3px 3px #000;box-shadow:10px 10px #000;animation:levelClear .8s steps(4,end) both}.level-clear small{display:block;margin-top:10px;color:#fff;font:8px var(--pixel);line-height:1.8}
+.all-unlocked{font-family:var(--pixel);text-shadow:3px 3px #000}
+.modal-box{border-color:#fff;box-shadow:12px 12px #000,0 0 35px rgba(115,255,139,.25)}
+@keyframes levelClear{0%{transform:scale(.1) rotate(-4deg);opacity:0}60%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+@media(max-width:650px){.game-chrome,.game-banner,.world-map-label{font-size:7px}.game-banner b{font-size:9px}.world-map-label{flex-direction:column;text-align:center}.save-slot{font-size:7px}.save-slot span{padding:4px}.card .enter-label{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.game-banner span:last-child,.level-clear,.card:hover .card-icon{animation:none;transition:none}}
+.world-number{position:absolute;left:11px;top:10px;font:7px var(--pixel);color:var(--gold);background:#000;padding:5px;border:2px solid #fff;box-shadow:3px 3px #000}.card.unlocked .world-number{color:var(--lime)}

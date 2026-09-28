@@ -12,6 +12,8 @@ const progressEl = $("#progress");
 const scoreEl = $("#score");
 const allUnlocked = $("#allUnlocked");
 const finalCard = $("#finalCard");
+const worldProgressFill = $("#worldProgressFill");
+const levelClear = $("#levelClear");
 const sparkleLayer = $("#sparkleLayer");
 
 const STORAGE_KEY = "renatinho-birthday-unlocked-v1";
@@ -116,11 +118,13 @@ function updateProgress(){
   const count = [...opened].filter(id => cards.some(c => c.id === id)).length;
   progressEl.textContent = `${count}/${TOTAL_CARDS}`;
   scoreEl.textContent = padScore(count);
+  if(worldProgressFill) worldProgressFill.style.width = `${(count / TOTAL_CARDS) * 100}%`;
   document.querySelectorAll(".card").forEach(btn=>{
     btn.classList.toggle("unlocked", opened.has(btn.dataset.card));
   });
   if(count >= TOTAL_CARDS){
     allUnlocked.classList.remove("hidden");
+    levelClear?.classList.remove("hidden");
     finalCard.classList.remove("hidden");
     finalCard.setAttribute("aria-hidden","false");
   }
@@ -128,12 +132,13 @@ function updateProgress(){
 
 function renderCards(){
   const grid = $("#cardsGrid");
-  grid.innerHTML = cards.map(c => `
-    <button class="card c${cards.indexOf(c)+1}" data-card="${c.id}" type="button" aria-label="Abrir ${c.titulo}">
+  grid.innerHTML = cards.map((c, i) => `
+    <button class="card c${i+1}" data-card="${c.id}" type="button" aria-label="Abrir ${c.titulo}">
+      <span class="world-number">WORLD ${String(i+1).padStart(2,"0")}</span>
       <span class="card-icon" aria-hidden="true">${c.icon}</span>
       <strong>${c.titulo}</strong>
       <small>${c.nome} • ${c.hint}</small>
-      <span class="enter-label">[ ENTER ]</span>
+      <span class="enter-label">[ PRESS A / ENTER ]</span>
     </button>
   `).join("");
 
