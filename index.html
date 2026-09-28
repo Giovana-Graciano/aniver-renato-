@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>✨ Você recebeu cartões virtuais! ✨</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stars"></div>
+
+  <main class="page">
+    <section class="intro" id="intro">
+      <div class="sparkle">✦ ✧ ✦</div>
+      <p class="tiny">VOCÊ RECEBEU UMA MENSAGEM ESPECIAL!!!</p>
+      <h1>💌 Uma surpresa para <span>VOCÊ</span> 💌</h1>
+      <p>Uma pequena viagem de volta à época em que a gente mandava PowerPoint por e-mail com música, glitter e declarações dramáticas.</p>
+      <button id="enterBtn">✨ CLIQUE PARA ENTRAR ✨</button>
+      <div class="marquee">★ aumente o volume ★ não pule nenhum cartão ★ feito com carinho ★</div>
+    </section>
+
+    <section class="wall hidden" id="wall">
+      <div class="title">
+        <span>✧･ﾟ: *✧･ﾟ:* </span>
+        <h2>💌 SEUS CARTÕES VIRTUAIS 💌</h2>
+        <span>*:･ﾟ✧*:･ﾟ✧</span>
+      </div>
+      <p class="subtitle">Cada pessoa preparou uma surpresa diferente. Clique nos envelopes!</p>
+
+      <div class="cards-grid">
+        <button class="card c1" data-card="fluminense">
+          <span class="envelope">💌</span><strong>Cartão do Amigo 1</strong><small>🏟️ abre em clima de estádio</small>
+        </button>
+        <button class="card c2" data-card="dino">
+          <span class="dino">🦖</span><strong>Cartão do Amigo 2</strong><small>🦴 uma descoberta jurássica</small>
+        </button>
+        <button class="card c3" data-card="onepiece">
+          <span class="pirate">☠️</span><strong>Cartão do Amigo 3</strong><small>🏴‍☠️ uma aventura começa</small>
+        </button>
+        <button class="card c4" data-card="music">
+          <span class="note">🎵</span><strong>Cartão do Amigo 4</strong><small>🎶 dê o play</small>
+        </button>
+        <button class="card c5" data-card="books">
+          <span class="book">📖</span><strong>Cartão do Amigo 5</strong><small>✍️ vire a página</small>
+        </button>
+        <button class="card c6" data-card="secret">
+          <span class="star">⭐</span><strong>Cartão do Amigo 6</strong><small>✨ ainda é segredo...</small>
+        </button>
+      </div>
+
+      <div class="final-hint">Quando todos forem abertos, alguma coisa pode acontecer... 👀</div>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-box" id="modalBox">
+      <button class="close" id="closeBtn">×</button>
+      <div id="animation"></div>
+      <div class="message" id="message"></div>
+    </div>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
