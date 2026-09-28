@@ -2,65 +2,101 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>✨ Você recebeu cartões virtuais! ✨</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#063b24">
+  <title>★ FELIZ ANIVERSÁRIO RENATINHO ★</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="stars"></div>
+  <div class="crt" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+  <div class="sparkle-layer" id="sparkleLayer" aria-hidden="true"></div>
 
   <main class="page">
-    <section class="intro" id="intro">
-      <div class="sparkle">✦ ✧ ✦</div>
-      <p class="tiny">VOCÊ RECEBEU UMA MENSAGEM ESPECIAL!!!</p>
-      <h1>💌 Uma surpresa para <span>VOCÊ</span> 💌</h1>
-      <p>Uma pequena viagem de volta à época em que a gente mandava PowerPoint por e-mail com música, glitter e declarações dramáticas.</p>
-      <button id="enterBtn">✨ CLIQUE PARA ENTRAR ✨</button>
-      <div class="marquee">★ aumente o volume ★ não pule nenhum cartão ★ feito com carinho ★</div>
+    <section class="intro" id="intro" aria-labelledby="introTitle">
+      <div class="window-tag">RENATINHO_STUDIOS.EXE <span>● ONLINE</span></div>
+      <div class="intro-inner">
+        <div class="sparkle">★ ✦ ★ ✧ ★</div>
+        <p class="tiny">!!! INCOMING TRANSMISSION !!!</p>
+        <h1 id="introTitle"><span>FELIZ ANIVERSÁRIO</span><strong>RENATINHO!!!</strong></h1>
+        <p class="quest">VOCÊ FOI SELECIONADO PARA UMA<br><b>MISSÃO ESPECIAL!!!</b></p>
+        <p class="warning">AUMENTE O SOM • CLIQUE EM TUDO • NÃO CONFIE EM NADA</p>
+
+        <div class="loading-box" aria-label="Loading memories 100 percent">
+          <div>LOADING MEMORIES…</div>
+          <div class="loading-bar"><span></span></div>
+          <small>████████████████████ 100%</small>
+        </div>
+
+        <button id="enterBtn" class="start-btn" type="button">
+          <span>▶</span> START GAME <span>◀</span>
+        </button>
+
+        <div class="intro-marquee">
+          <span>★ BEST VIEWED AT 800x600 ★ USE INTERNET EXPLORER ★ NEW!!! ★ CLICK EVERYTHING. THIS IS THE INTERNET. &lt;&lt;</span>
+        </div>
+        <p class="copyright">© 2000-2026 RENATINHO STUDIOS<br>NO COOKIES. NO RESPONSIBILITY. 100% LOVE.</p>
+      </div>
     </section>
 
-    <section class="wall hidden" id="wall">
-      <div class="title">
-        <span>✧･ﾟ: *✧･ﾟ:* </span>
-        <h2>💌 SEUS CARTÕES VIRTUAIS 💌</h2>
-        <span>*:･ﾟ✧*:･ﾟ✧</span>
-      </div>
-      <p class="subtitle">Cada pessoa preparou uma surpresa diferente. Clique nos envelopes!</p>
+    <section class="wall hidden" id="wall" aria-labelledby="mainTitle">
+      <header class="site-header">
+        <div class="logo">RENATINHO<br><span>2000</span></div>
+        <div class="title-block">
+          <div class="blink tiny">★ !!! SPECIAL EDITION !!! ★</div>
+          <h2 id="mainTitle">★ FELIZ ANIVERSÁRIO <em>RENATINHO!!!</em> ★</h2>
+          <p>UMA EXPERIÊNCIA INTERATIVA DE ALTA TECNOLOGIA DE 2004.</p>
+        </div>
+        <div class="visitor">YOU ARE VISITOR<br><b>#000013</b></div>
+      </header>
 
-      <div class="cards-grid">
-        <button class="card c1" data-card="fluminense">
-          <span class="envelope">💌</span><strong>Cartão do Amigo 1</strong><small>🏟️ abre em clima de estádio</small>
-        </button>
-        <button class="card c2" data-card="dino">
-          <span class="dino">🦖</span><strong>Cartão do Amigo 2</strong><small>🦴 uma descoberta jurássica</small>
-        </button>
-        <button class="card c3" data-card="onepiece">
-          <span class="pirate">☠️</span><strong>Cartão do Amigo 3</strong><small>🏴‍☠️ uma aventura começa</small>
-        </button>
-        <button class="card c4" data-card="music">
-          <span class="note">🎵</span><strong>Cartão do Amigo 4</strong><small>🎶 dê o play</small>
-        </button>
-        <button class="card c5" data-card="books">
-          <span class="book">📖</span><strong>Cartão do Amigo 5</strong><small>✍️ vire a página</small>
-        </button>
-        <button class="card c6" data-card="secret">
-          <span class="star">⭐</span><strong>Cartão do Amigo 6</strong><small>✨ ainda é segredo...</small>
-        </button>
+      <div class="hud" aria-label="Status do jogo">
+        <span>PLAYER: <b>RENATINHO</b></span>
+        <span>LEVEL: <b>BIRTHDAY</b></span>
+        <span>LIVES: <b>♥ ♥ ♥ ♥ ♥</b></span>
+        <span>SCORE: <b id="score">000000</b></span>
+        <span>MEMORIES UNLOCKED: <b id="progress">0/6</b></span>
       </div>
 
-      <div class="final-hint">Quando todos forem abertos, alguma coisa pode acontecer... 👀</div>
+      <div class="notice">
+        <span class="new">NEW!!!</span>
+        <span>CLIQUЕ EM UMA FASE PARA DESBLOQUEAR UMA MEMÓRIA.</span>
+        <span class="blink">PRESS ENTER</span>
+      </div>
+
+      <section class="cards-grid" id="cardsGrid" aria-label="Cartões de aniversário"></section>
+
+      <div class="all-unlocked hidden" id="allUnlocked">
+        ★ ★ ★ ALL MEMORIES UNLOCKED ★ ★ ★
+        <small>VOCÊ DESCOBRIU O ARQUIVO SECRETO.</small>
+      </div>
+
+      <button class="final-card hidden" id="finalCard" type="button">
+        <span class="final-star">★</span>
+        <span class="final-title">SECRET FINAL FILE</span>
+        <span class="final-subtitle">[ ACCESS GRANTED ]</span>
+      </button>
+
+      <footer class="site-footer">
+        <div>BEST VIEWED AT 800x600 • MADE WITH ✦ GLITTER ✦ MS PAINT ✦ HTML</div>
+        <div>CLICK EVERYTHING. THIS IS THE INTERNET. &lt;&lt; <span class="blink">ONLINE!!!</span></div>
+      </footer>
     </section>
   </main>
 
-  <div class="modal hidden" id="modal">
+  <div class="modal hidden" id="modal" aria-hidden="true">
     <div class="modal-backdrop"></div>
-    <div class="modal-box" id="modalBox">
-      <button class="close" id="closeBtn">×</button>
+    <div class="modal-box" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="close" id="closeBtn" type="button" aria-label="Fechar">X</button>
+      <div class="modal-topbar"><span>● ● ●</span><b id="modalFile">MEMORY.EXE</b><span>_ □ X</span></div>
       <div id="animation"></div>
       <div class="message" id="message"></div>
     </div>
   </div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
