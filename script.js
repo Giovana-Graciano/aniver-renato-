@@ -20,6 +20,12 @@ const starsCollectedEl = $("#starsCollected");
 const worldProgressFill = $("#worldProgressFill");
 const levelClear = $("#levelClear");
 const sparkleLayer = $("#sparkleLayer");
+const audioPlayer = $("#audioPlayer");
+const playlistList = $("#playlistList");
+const nowPlaying = $("#nowPlaying");
+const nowPlayingFriend = $("#nowPlayingFriend");
+const playlistProgress = $("#playlistProgress");
+let currentTrack = null;
 
 const STORAGE_KEY = "renatinho-birthday-unlocked-v1";
 const TOTAL_CARDS = 6;
@@ -45,7 +51,8 @@ const cards = [
     tipoDeAnimacao:"stadium",
     mensagem:"Aqui entra a mensagem real do amigo. Você pode colocar histórias de futebol, provocações carinhosas, fotos de vocês e qualquer lembrança que tenha a cara do Renatinho.",
     fotos:[],
-    musica:""
+    musica:"",
+    musicaNome:""
   },
   {
     id:"dino",
@@ -56,7 +63,8 @@ const cards = [
     tipoDeAnimacao:"dino",
     mensagem:"Uma mensagem jurássica para lembrar o Renatinho que amava dinossauros. Aqui entram fotos antigas, histórias de infância e a descoberta científica de qual dinossauro ele seria.",
     fotos:[],
-    musica:""
+    musica:"",
+    musicaNome:""
   },
   {
     id:"onepiece",
@@ -67,7 +75,8 @@ const cards = [
     tipoDeAnimacao:"pirate",
     mensagem:"Uma aventura começa! Este espaço pode virar um mapa do tesouro com memórias, histórias, viagens, amizades e referências genéricas ao espírito pirata que ele curte.",
     fotos:[],
-    musica:""
+    musica:"",
+    musicaNome:""
   },
   {
     id:"music",
@@ -78,7 +87,8 @@ const cards = [
     tipoDeAnimacao:"music",
     mensagem:"Dê o play: este cartão pode receber uma dedicatória musical, uma capa de álbum, fotos, lembranças e uma música escolhida pelo amigo.",
     fotos:[],
-    musica:""
+    musica:"",
+    musicaNome:""
   },
   {
     id:"books",
@@ -89,7 +99,8 @@ const cards = [
     tipoDeAnimacao:"books",
     mensagem:"CAPÍTULO ESPECIAL: aqui entra uma homenagem em forma de livro — dedicatória, capítulos de memórias, histórias e a última página com a mensagem final.",
     fotos:[],
-    musica:""
+    musica:"",
+    musicaNome:""
   },
   {
     id:"secret",
@@ -210,6 +221,37 @@ function spawnSparkles(count=14){
   }
 }
 
+function renderPlaylist(){
+  if(!playlistList) return;
+  const tracks = cards.filter(c => c.musica);
+  if(!tracks.length){
+    playlistList.innerHTML=`<div class="playlist-empty">♪ NENHUMA MÚSICA ADICIONADA AINDA.<br><small>Preencha o campo <b>musica</b> de cada amigo para montar a playlist.</small></div>`;
+    return;
+  }
+  playlistList.innerHTML=tracks.map((c,i)=>`<button class="playlist-track" type="button" data-track-id="${escapeHtml(c.id)}">
+    <span class="track-number">${String(i+1).padStart(2,"0")}</span><span class="track-note">♫</span><span class="track-info"><b>${escapeHtml(c.musicaNome || c.titulo)}</b><small>${escapeHtml(c.nome)}</small></span><span class="track-play">▶</span>
+  </button>`).join("");
+  playlistList.querySelectorAll(".playlist-track").forEach(btn=>btn.addEventListener("click",()=>playFriendMusic(btn.dataset.trackId)));
+}
+
+function playFriendMusic(id){
+  const c=cards.find(x=>x.id===id);
+  if(!c?.musica || !audioPlayer) return;
+  initAudio();
+  playTone("music");
+  currentTrack=c;
+  audioPlayer.src=c.musica;
+  audioPlayer.play().catch(()=>{});
+  if(nowPlaying) nowPlaying.textContent=`♫ ${c.musicaNome || c.titulo}`;
+  if(nowPlayingFriend) nowPlayingFriend.textContent=`DE: ${c.nome}`;
+  document.querySelectorAll(".playlist-track").forEach(btn=>btn.classList.toggle("playing",btn.dataset.trackId===id));
+}
+
+function attachMusicMarkup(c){
+  if(!c.musica) return "";
+  return `<div class="friend-music"><div class="friend-music-label">♫ MÚSICA DO AMIGO</div><button class="music-inline" type="button" data-music-id="${escapeHtml(c.id)}">▶ OUVIR: ${escapeHtml(c.musicaNome || c.titulo)}</button></div>`;
+}
+
 function openCard(id){
   const c=cards.find(x=>x.id===id);
   if(!c) return;
@@ -290,7 +332,7 @@ function buildMessage(c){
     ? `<div class="progress-line">CHAPTER 01 → CHAPTER 02 → SPECIAL ENDING</div>`
     : `<div class="progress-line">FOSSIL / MEMORY / DISCOVERY FOUND ✓</div>`;
 
-  return `<h3 id="modalTitle">${escapeHtml(c.titulo)}</h3>${extra}<p>${escapeHtml(c.mensagem)}</p>
+  return `<h3 id="modalTitle">${escapeHtml(c.titulo)}</h3>${extra}<p>${escapeHtml(c.mensagem)}</p>${attachMusicMarkup(c)}
     <button class="back-btn" type="button" onclick="closeCard()">↩ VOLTAR AOS CARTÕES</button>`;
 }
 
@@ -334,10 +376,10 @@ enterBtn.addEventListener("click",()=>{
 });
 
 modal.addEventListener("click", (e)=>{
-  const btn=e.target.closest(".open-friend-card");
-  if(!btn) return;
-  playTone("unlock");
-  revealCard(btn.dataset.openCard);
+  const openBtn=e.target.closest(".open-friend-card");
+  if(openBtn){ playTone("unlock"); revealCard(openBtn.dataset.openCard); return; }
+  const musicBtn=e.target.closest(".music-inline");
+  if(musicBtn){ playFriendMusic(musicBtn.dataset.musicId); }
 });
 
 $("#finalCard").addEventListener("click",openFinal);
@@ -348,3 +390,15 @@ document.addEventListener("keydown",e=>{
 });
 
 renderCards();
+renderPlaylist();
+
+playlistList?.addEventListener("click", (e)=>{
+  const track=e.target.closest(".playlist-track");
+  if(track) playFriendMusic(track.dataset.trackId);
+});
+playlistList?.addEventListener("keydown", (e)=>{ if(e.key==="Enter" || e.key===" "){ const track=e.target.closest(".playlist-track"); if(track){ e.preventDefault(); playFriendMusic(track.dataset.trackId); } } });
+$("#playlistPlay")?.addEventListener("click",()=>{ initAudio(); audioPlayer?.play().catch(()=>{}); playTone("click"); });
+$("#playlistPause")?.addEventListener("click",()=>{ audioPlayer?.pause(); playTone("click"); });
+$("#playlistStop")?.addEventListener("click",()=>{ if(audioPlayer){ audioPlayer.pause(); audioPlayer.currentTime=0; } playTone("click"); });
+audioPlayer?.addEventListener("timeupdate",()=>{ if(audioPlayer.duration && playlistProgress) playlistProgress.style.width=`${(audioPlayer.currentTime/audioPlayer.duration)*100}%`; });
+audioPlayer?.addEventListener("ended",()=>{ document.querySelectorAll(".playlist-track").forEach(btn=>btn.classList.remove("playing")); if(playlistProgress) playlistProgress.style.width="0%"; });

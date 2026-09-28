@@ -24,6 +24,9 @@
         <p class="tiny">!!! INCOMING TRANSMISSION !!!</p>
         <h1 id="introTitle"><span>FELIZ ANIVERSÁRIO</span><strong>RENATINHO!!!</strong></h1>
         <div class="save-slot"><span>1 PLAYER</span><span>FILE 01</span><span>♥♥♥♥♥</span></div>
+        <div class="birthday-badge" aria-label="26 anos em 30 de outubro de 2026">
+          <span>★ BIRTHDAY EDITION ★</span><b>26 ANOS</b><small>30/10/2000 → 30/10/2026</small>
+        </div>
         <p class="quest">VOCÊ FOI SELECIONADO PARA UMA<br><b>MISSÃO ESPECIAL!!!</b></p>
         <p class="warning">AUMENTE O SOM • CLIQUE EM TUDO • NÃO CONFIE EM NADA</p>
 
@@ -52,6 +55,7 @@
           <div class="blink tiny">★ !!! SPECIAL EDITION !!! ★</div>
           <h2 id="mainTitle">★ FELIZ ANIVERSÁRIO <em>RENATINHO!!!</em> ★</h2>
           <p>UMA EXPERIÊNCIA INTERATIVA DE ALTA TECNOLOGIA DE 2004.</p>
+          <div class="age-mini">♥ 26 ANOS • 30/10/2026 • NASCIDO EM 30/10/2000 ♥</div>
         </div>
         <div class="visitor">YOU ARE VISITOR<br><b>#000013</b></div>
       </header>
@@ -73,9 +77,24 @@
 
       <div class="notice">
         <span class="new">NEW!!!</span>
-        <span>CLIQUЕ EM UMA FASE PARA DESBLOQUEAR UMA MEMÓRIA.</span>
+        <span>CLIQUE EM UMA FASE PARA DESBLOQUEAR UMA MEMÓRIA.</span>
         <span class="blink">PRESS ENTER</span>
       </div>
+
+      <section class="playlist-box" aria-label="Playlist de aniversário">
+        <div class="playlist-head">
+          <div><span class="playlist-icon">♫</span><b>RENATINHO'S BIRTHDAY PLAYLIST</b><small>★ MÚSICAS DOS AMIGOS ★</small></div>
+          <span class="playlist-date">30/10/2026</span>
+        </div>
+        <div class="playlist-body">
+          <div class="playlist-window">
+            <div class="playlist-screen"><span id="nowPlaying">♪ SELECIONE UMA MÚSICA</span><small id="nowPlayingFriend">A playlist está esperando os amigos.</small></div>
+            <div class="playlist-controls"><button id="playlistPlay" type="button" aria-label="Reproduzir música">▶</button><button id="playlistPause" type="button" aria-label="Pausar música">Ⅱ</button><button id="playlistStop" type="button" aria-label="Parar música">■</button><div class="playlist-progress"><span id="playlistProgress"></span></div></div>
+          </div>
+          <div class="playlist-list" id="playlistList"><div class="playlist-empty">♪ NENHUMA MÚSICA ADICIONADA AINDA.<br><small>Os amigos podem colocar seus arquivos depois.</small></div></div>
+        </div>
+        <audio id="audioPlayer" preload="metadata"></audio>
+      </section>
 
       <div class="world-progress" aria-hidden="true"><span id="worldProgressFill"></span></div>
       <section class="cards-grid" id="cardsGrid" aria-label="Cartões de aniversário"></section>
