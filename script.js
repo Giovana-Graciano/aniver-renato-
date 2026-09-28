@@ -213,6 +213,37 @@ function spawnSparkles(count=14){
 function openCard(id){
   const c=cards.find(x=>x.id===id);
   if(!c) return;
+  openPreview(c);
+}
+
+function openPreview(c){
+  initAudio();
+  playTone("click");
+  const world = String(cards.findIndex(x=>x.id===c.id)+1).padStart(2,"0");
+  animation.className=`anim-wrap anim-preview preview-${c.tipoDeAnimacao}`;
+  $("#modalFile").textContent=`PREVIEW_${c.id.toUpperCase()}.HTML`;
+  animation.innerHTML=`
+    <div class="preview-envelope" aria-hidden="true">
+      <div class="preview-stamp">★</div>
+      <div class="preview-icon">${c.icon}</div>
+      <div class="preview-postmark">WORLD ${world}</div>
+    </div>`;
+  message.innerHTML=`
+    <div class="preview-kicker">★ VOCÊ RECEBEU UM CARTÃO VIRTUAL ★</div>
+    <h3 id="modalTitle">${escapeHtml(c.titulo)}</h3>
+    <div class="preview-from">DE: <b>${escapeHtml(c.nome)}</b> &nbsp; • &nbsp; ASSUNTO: ${escapeHtml(c.hint)}</div>
+    <p class="preview-copy">Uma pequena prévia foi carregada. O cartão de aniversário deste amigo está esperando para ser aberto.</p>
+    <button class="open-friend-card" type="button" data-open-card="${escapeHtml(c.id)}">✉ ABRIR CARTÃO DO AMIGO ✉</button>
+    <button class="back-btn preview-back" type="button" onclick="closeCard()">↩ VOLTAR AOS CARTÕES</button>`;
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+  setTimeout(()=>$(".open-friend-card")?.focus(),80);
+}
+
+function revealCard(id){
+  const c=cards.find(x=>x.id===id);
+  if(!c) return;
   initAudio();
   playTone(c.tipoDeAnimacao==="stadium"?"stadium":c.tipoDeAnimacao==="dino"?"dino":c.tipoDeAnimacao==="pirate"?"pirate":c.tipoDeAnimacao==="music"?"music":c.tipoDeAnimacao==="books"?"books":"secret");
   const world = String(cards.findIndex(x=>x.id===id)+1).padStart(2,"0");
@@ -300,6 +331,13 @@ enterBtn.addEventListener("click",()=>{
   intro.classList.add("hidden");
   wall.classList.remove("hidden");
   window.scrollTo({top:0,behavior:"smooth"});
+});
+
+modal.addEventListener("click", (e)=>{
+  const btn=e.target.closest(".open-friend-card");
+  if(!btn) return;
+  playTone("unlock");
+  revealCard(btn.dataset.openCard);
 });
 
 $("#finalCard").addEventListener("click",openFinal);
